@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตัวอย่างหน้าตาระบบ บ้านพักรับรอง สถานีรายงานภูหมันขาว</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        rtafNavy: '#0A192F',
+                        rtafNavyLight: '#112240',
+                        rtafGold: '#D4AF37',
+                        rtafGoldLight: '#F3E5AB',
+                        rtafGoldDark: '#AA8C2C',
+                    },
+                    fontFamily: {
+                        sans: ['Sarabun', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Sarabun', sans-serif; background-color: #0A192F; }
+        .gold-btn { background: linear-gradient(135deg, #D4AF37 0%, #AA8C2C 100%); color: #0A192F; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- Mobile Mockup Container -->
+    <div class="w-full max-w-sm bg-[#0A192F] text-white border-2 border-rtafGold rounded-3xl shadow-2xl overflow-hidden flex flex-col min-h-[680px] relative">
+        
+        <!-- Top Status Bar Simulation -->
+        <div class="bg-[#112240] px-6 py-2.5 flex justify-between items-center text-[11px] text-slate-300 border-b border-rtafGold/20">
+            <span>09:41</span>
+            <div class="flex items-center space-x-1.5">
+                <span class="text-rtafGold font-semibold">5G</span>
+                <div class="w-4 h-2.5 border border-slate-300 rounded-sm p-0.5 flex items-center">
+                    <div class="w-full h-full bg-rtafGold rounded-2xs"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cover Page Content -->
+        <div class="flex-1 flex flex-col items-center justify-center p-6 text-center space-y-6">
+            
+            <!-- Central Emblem Container -->
+            <div class="relative">
+                <div class="absolute -inset-2 rounded-full bg-rtafGold/20 blur-md animate-pulse"></div>
+                <div class="w-36 h-36 rounded-full border-4 border-rtafGold bg-[#112240] flex items-center justify-center shadow-2xl relative overflow-hidden">
+                    <svg class="w-24 h-24 text-rtafGold" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9" stroke="#D4AF37" stroke-width="1.5" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18M3 12h18M7.5 7.5l9 9M7.5 16.5l9-9" />
+                        <path fill="#D4AF37" d="M12 7l2 4h3l-2.5 2 1 3-3.5-2-3.5 2 1-3-2.5-2h3z" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- System Title Text -->
+            <div class="space-y-1.5">
+                <p class="text-[10px] tracking-widest uppercase text-rtafGold font-bold">ROYAL THAI AIR FORCE</p>
+                <h1 class="text-lg font-bold tracking-wide text-white leading-snug">
+                    ระบบจองบ้านพักรับรอง<br>สถานีรายงานภูหมันขาว
+                </h1>
+            </div>
+
+            <!-- Enter Button -->
+            <div class="w-full max-w-[220px] pt-3">
+                <button onclick="alert('จำลองการเข้าสู่ระบบ: ระบบจะนำท่านเข้าสู่เมนูหลักทั้ง 3 ส่วน')" class="w-full py-3 px-4 gold-btn font-bold text-xs rounded-xl shadow-lg hover:opacity-95 transition tracking-wide uppercase">
+                    เข้าสู่ระบบจองบ้านพัก
+                </button>
+            </div>
+
+            <!-- Navigation Bar Preview -->
+            <div class="w-full pt-4 border-t border-slate-700/60 mt-4">
+                <p class="text-[10px] text-rtafGoldLight mb-2 font-medium">แถบเมนูนำทางหลัก (หลังเข้าสู่ระบบ)</p>
+                <div class="grid grid-cols-3 gap-1.5 text-center text-[11px]">
+                    <div class="bg-[#112240] border border-rtafGold/50 text-rtafGoldLight py-2 rounded font-bold">1. ระเบียบ</div>
+                    <div class="bg-[#112240] border border-slate-700 text-slate-300 py-2 rounded">2. จองห้อง</div>
+                    <div class="bg-[#112240] border border-slate-700 text-slate-300 py-2 rounded">3. สั่งอาหาร</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Home Indicator -->
+        <div class="py-2 flex justify-center bg-[#112240]">
+            <div class="w-28 h-1 bg-slate-500 rounded-full"></div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+```eof
+
+ท่านสามารถคลิกปุ่ม **Preview** ด้านบนเพื่อดูตัวอย่างหน้าจอจำลองได้ทันทีครับ
