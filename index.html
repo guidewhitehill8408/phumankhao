@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="w-full max-w-xs pt-2">
-                    <button type="button" onclick="enterApp()" class="w-full py-4 px-4 gold-accent-btn font-bold text-sm rounded-xl shadow-lg hover:opacity-95 transition tracking-wide uppercase cursor-pointer">
+                    <button type="button" onclick="enterApp()" class="w-full py-4 px-4 gold-accent-btn font-bold text-sm rounded-xl shadow-lg hover:opacity-95 transition tracking-wide uppercase">
                         เข้าสู่ระบบจองบ้านพัก
                     </button>
                 </div>
@@ -206,30 +206,10 @@
             <section id="tab-booking" class="p-4 space-y-5 hidden bg-slate-50">
                 <div class="border-l-4 border-rtafGold bg-rtafNavy text-white p-4 rounded-r-lg shadow-sm">
                     <h2 class="font-bold text-sm text-rtafGoldLight">จองบ้านพักรับรอง (ห้อง 1101 - 1104)</h2>
-                    <p class="text-xs text-slate-300 mt-1">ตรวจสอบตารางห้องว่างจากปฏิทิน Google Calendar (bansoropomo@gmail.com)</p>
+                    <p class="text-xs text-slate-300 mt-1">ตรวจสอบตารางห้องว่างจากปฏิทินระบบ (แสดงเฉพาะสถานะสีห้องว่าง)</p>
                 </div>
 
                 <div class="bg-white rounded-lg border border-slate-200 p-4 space-y-3 shadow-sm">
-                    <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
-                        <div>
-                            <h3 class="font-bold text-xs text-red-700 flex items-center space-x-1">
-                                <span class="w-2.5 h-2.5 rounded-full bg-red-600 inline-block"></span>
-                                <span>ปฏิทินระบบจองบ้าน สร.ภม. (เรียลไทม์)</span>
-                            </h3>
-                            <p id="calendar-month-label" class="text-[11px] text-slate-500 mt-0.5">เดือน พฤศจิกายน 2026</p>
-                        </div>
-                        <div class="flex items-center space-x-1.5">
-                            <a id="host-calendar-public-link" href="https://calendar.google.com/calendar/embed?src=bansoropomo%40gmail.com" target="_blank" rel="noopener noreferrer" class="text-[11px] font-semibold text-rtafNavy bg-rtafGoldLight/70 hover:bg-rtafGoldLight border border-rtafGold px-2.5 py-1 rounded transition">
-                                เปิดปฏิทิน Google
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Google Calendar Embed (Realtime view from bansoropomo@gmail.com) -->
-                    <div class="w-full h-48 rounded border border-slate-200 overflow-hidden bg-slate-50">
-                        <iframe src="https://calendar.google.com/calendar/embed?src=bansoropomo%40gmail.com&ctz=Asia%2FBangkok" style="border: 0" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
-                    </div>
-
                     <div class="flex items-center justify-between bg-slate-50 px-3 py-1.5 rounded border border-slate-200 text-xs">
                         <button type="button" onclick="changeCalendarMonth(-1)" class="font-bold text-rtafNavy px-2 py-0.5 hover:bg-slate-200 rounded">ก่อนหน้า</button>
                         <span id="calendar-current-title" class="font-bold text-rtafNavy">พฤศจิกายน 2026</span>
@@ -703,7 +683,6 @@
                     colorClass = 'bg-red-50 text-red-900 border-red-200 hover:bg-red-100';
                 }
 
-                // แสดงเฉพาะสถานะห้องว่าง (เช่น ว่าง 4, เต็ม) โดยไม่มีข้อความหรือชื่อผู้จองบนปฏิทิน
                 let badgeText = `ว่าง ${availableCount}`;
                 if (availableCount === 0) {
                     badgeText = 'เต็ม';
@@ -723,7 +702,6 @@
             const availableRooms = allRooms.filter(r => !occupied.includes(r));
             const detailBox = document.getElementById('calendar-day-detail');
 
-            // แสดงผลเฉพาะจำนวนห้องว่าง ซ่อนชื่อผู้จองทั้งหมดเพื่อความเป็นส่วนตัว
             detailBox.innerHTML = `<span class="font-bold text-rtafNavy">วันที่ ${dateStr}:</span> ว่าง ${availableRooms.length} ห้อง (<span class="font-bold text-emerald-800">ห้อง ${availableRooms.join(', ')}</span>)`;
             
             const checkinInput = document.getElementById('checkin-date');
@@ -1044,4 +1022,3 @@
     </script>
 </body>
 </html>
-```eof
