@@ -206,13 +206,16 @@
             <section id="tab-booking" class="p-4 space-y-5 hidden bg-slate-50">
                 <div class="border-l-4 border-rtafGold bg-rtafNavy text-white p-4 rounded-r-lg shadow-sm">
                     <h2 class="font-bold text-sm text-rtafGoldLight">จองบ้านพักรับรอง (ห้อง 1101 - 1104)</h2>
-                    <p class="text-xs text-slate-300 mt-1">ตรวจสอบตารางห้องว่างจากปฏิทินระบบจองบ้าน สร.ภม. และระบุข้อมูลการเข้าพัก</p>
+                    <p class="text-xs text-slate-300 mt-1">ตรวจสอบตารางห้องว่างจากปฏิทินระบบจองบ้าน สร.ภม. (สีแดง)</p>
                 </div>
 
                 <div class="bg-white rounded-lg border border-slate-200 p-4 space-y-3 shadow-sm">
                     <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
                         <div>
-                            <h3 class="font-bold text-xs text-rtafNavy">ปฏิทินระบบจองบ้าน สร.ภม.</h3>
+                            <h3 class="font-bold text-xs text-red-700 flex items-center space-x-1">
+                                <span class="w-2.5 h-2.5 rounded-full bg-red-600 inline-block"></span>
+                                <span>ปฏิทินระบบจองบ้าน สร.ภม.</span>
+                            </h3>
                             <p id="calendar-month-label" class="text-[11px] text-slate-500 mt-0.5">เดือน พฤศจิกายน 2026</p>
                         </div>
                         <div class="flex items-center space-x-1.5">
@@ -614,23 +617,45 @@
         let currentCalMonth = 10;
         let hostCalendarEmail = 'guidewhitehill8408@gmail.com';
 
-        // เชื่อมโยงสถานะห้องว่างเฉพาะจากปฏิทิน "ระบบจองบ้าน สร.ภม." เท่านั้น
+        // เชื่อมโยงสถานะห้องว่างเฉพาะปฏิทิน "ระบบจองบ้าน สร.ภม." (สีแดง) เท่านั้น
         const defaultOccupiedRooms = {
+            '2026-11-01': ['1101'],
+            '2026-11-05': ['1101', '1102', '1103', '1104'],
+            '2026-11-06': ['1102', '1103'],
+            '2026-11-13': ['1101', '1102'],
+            '2026-11-15': ['1101', '1102', '1103', '1104'],
+            '2026-11-16': ['1101'],
+            '2026-11-18': ['1102', '1103', '1104'],
+            '2026-11-20': ['1101'],
+            '2026-11-21': ['1102', '1103'],
             '2026-11-22': ['1101', '1102'],
             '2026-11-23': ['1101', '1102', '1103', '1104'],
             '2026-11-25': ['1103'],
-            '2026-11-28': ['1101', '1102', '1103', '1104']
+            '2026-11-27': ['1101'],
+            '2026-11-28': ['1101', '1102', '1103', '1104'],
+            '2026-12-01': ['1102'],
+            '2026-12-03': ['1101', '1102'],
+            '2026-12-05': ['1101', '1102', '1103', '1104']
         };
         let occupiedRoomsByDate = JSON.parse(localStorage.getItem('phumankhao_central_calendar')) || defaultOccupiedRooms;
         let calendarEventDetails = JSON.parse(localStorage.getItem('phumankhao_calendar_events')) || {
-            '2026-11-01': ['(จ่ายแล้ว) ร.ต.ชำนาญ ดีประเสริฐ [ระบบจองบ้าน สร.ภม.]'],
-            '2026-11-06': ['(จ่ายแล้ว) ร.อ.อภิชาติ [ระบบจองบ้าน สร.ภม.]'],
-            '2026-11-15': ['คณะนักเรียน คปอ. [ระบบจองบ้าน สร.ภม.]'],
-            '2026-11-20': ['น.ต.ยุทธน [ระบบจองบ้าน สร.ภม.]'],
-            '2026-11-22': ['ทอดกฐินวัดหลวงพ่อกวย [ระบบจองบ้าน สร.ภม.]'],
-            '2026-11-25': ['ห้อง 1103 [ระบบจองบ้าน สร.ภม.]'],
-            '2026-12-01': ['ร.ท.ธิติ ภูภักดี [ระบบจองบ้าน สร.ภม.]'],
-            '2026-12-05': ['น.ท.นฤอรรถ ศรีพุ่มไก่ [ระบบจองบ้าน สร.ภม.]']
+            '2026-11-01': ['[ระบบจองบ้าน สร.ภม.] ร.ต.ชำนาญ ดีประเสริฐ'],
+            '2026-11-05': ['[ระบบจองบ้าน สร.ภม.] ร.ท.สิริวัฒน์'],
+            '2026-11-06': ['[ระบบจองบ้าน สร.ภม.] ร.อ.อภิชาติ'],
+            '2026-11-13': ['[ระบบจองบ้าน สร.ภม.] น.อ.กิตติกรณ์'],
+            '2026-11-15': ['[ระบบจองบ้าน สร.ภม.] คณะนักเรียน คปอ.'],
+            '2026-11-16': ['[ระบบจองบ้าน สร.ภม.] ร.ท.จีระศักดิ์'],
+            '2026-11-18': ['[ระบบจองบ้าน สร.ภม.] ขรก.ศคปอ.ดม.'],
+            '2026-11-20': ['[ระบบจองบ้าน สร.ภม.] น.ต.ยุทธน'],
+            '2026-11-21': ['[ระบบจองบ้าน สร.ภม.] น.ท.นฤอรรถ'],
+            '2026-11-22': ['[ระบบจองบ้าน สร.ภม.] ทอดกฐินวัดหลวงพ่อกวย'],
+            '2026-11-23': ['[ระบบจองบ้าน สร.ภม.] จองเต็มอัตรา'],
+            '2026-11-25': ['[ระบบจองบ้าน สร.ภม.] ห้อง 1103'],
+            '2026-11-27': ['[ระบบจองบ้าน สร.ภม.] พ.อ.อ.ทนุ'],
+            '2026-11-28': ['[ระบบจองบ้าน สร.ภม.] ร.ท.บุญยง'],
+            '2026-12-01': ['[ระบบจองบ้าน สร.ภม.] ร.ท.ธิติ ภูภักดี'],
+            '2026-12-03': ['[ระบบจองบ้าน สร.ภม.] เสี่ยแบงค์ ทอ.'],
+            '2026-12-05': ['[ระบบจองบ้าน สร.ภม.] น.ท.นฤอรรถ ศรีพุ่มไก่']
         };
 
         const thaiMonths = [
@@ -703,22 +728,22 @@
                 const availableCount = Math.max(0, 4 - occupied.length);
 
                 let colorClass = 'bg-emerald-50 text-emerald-900 border-emerald-200 hover:bg-emerald-100';
-                if (events.length > 0 || availableCount < 4) {
+                if (availableCount < 4 && availableCount > 0) {
                     colorClass = 'bg-amber-50 text-amber-900 border-amber-200 hover:bg-amber-100';
-                }
-                if (availableCount === 0 || events.length > 1) {
+                } else if (availableCount === 0) {
                     colorClass = 'bg-red-50 text-red-900 border-red-200 hover:bg-red-100';
                 }
 
+                // ไม่แสดงข้อความชื่อผู้จองในตาราง แสดงเฉพาะสถานะห้องว่าง (เช่น ว่าง 4, ว่าง 2, เต็ม)
                 let badgeText = `ว่าง ${availableCount}`;
-                if (events.length > 0) {
-                    badgeText = `<span class="truncate max-w-[55px] block text-[8px] bg-white/90 px-1 rounded text-rtafNavy font-bold">${events[0]}</span>`;
+                if (availableCount === 0) {
+                    badgeText = 'เต็ม';
                 }
 
                 const dayBtn = document.createElement('button');
                 dayBtn.type = 'button';
-                dayBtn.className = `py-1.5 px-0.5 rounded border font-semibold transition flex flex-col items-center justify-center ${colorClass}`;
-                dayBtn.innerHTML = `<span>${day}</span><span class="text-[9px] font-normal mt-0.5">${badgeText}</span>`;
+                dayBtn.className = `py-2 px-0.5 rounded border font-semibold transition flex flex-col items-center justify-center ${colorClass}`;
+                dayBtn.innerHTML = `<span>${day}</span><span class="text-[10px] font-bold mt-0.5">${badgeText}</span>`;
                 dayBtn.onclick = () => selectCalendarDate(dateStr, occupied, events);
                 grid.appendChild(dayBtn);
             }
