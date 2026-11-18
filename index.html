@@ -519,36 +519,24 @@
             ['regulations', 'booking', 'food'].forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if (el) el.classList.add('hidden');
-// ... existing code ... -->
-        window.onload = function () {
-            // ปลดล็อกให้เลือกจองได้ตั้งแต่วันนี้เป็นต้นไป (ไม่ต้องรอ 4 วัน)
-            const today = new Date(2026, 10, 18);
-            const nextDay = new Date(today);
-            nextDay.setDate(today.getDate() + 1);
+                const btn = document.getElementById(`nav-btn-${t}`);
+                if (btn) {
+                    btn.classList.remove('border-rtafGold', 'text-rtafGoldLight', 'bg-rtafNavy', 'font-bold');
+                    btn.classList.add('border-transparent', 'text-slate-300', 'font-medium');
+                }
+            });
 
-            const formatYMD = (d) => {
-                const y = d.getFullYear();
-                const m = String(d.getMonth() + 1).padStart(2, '0');
-                const day = String(d.getDate()).padStart(2, '0');
-                return `${y}-${m}-${day}`;
-            };
-
-            const checkinInput = document.getElementById('checkin-date');
-            const checkoutInput = document.getElementById('checkout-date');
-            if (checkinInput) {
-                checkinInput.min = formatYMD(today);
-                checkinInput.value = formatYMD(today);
-            }
-            if (checkoutInput) {
-                checkoutInput.min = formatYMD(nextDay);
-                checkoutInput.value = formatYMD(nextDay);
+            const targetTab = document.getElementById(`tab-${tabName}`);
+            if (targetTab) targetTab.classList.remove('hidden');
+            
+            const activeBtn = document.getElementById(`nav-btn-${tabName}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('border-transparent', 'text-slate-300', 'font-medium');
+                activeBtn.classList.add('border-rtafGold', 'text-rtafGoldLight', 'bg-rtafNavy', 'font-bold');
             }
 
-            renderCalendar();
-            updateRoomAvailabilityByDate();
-            renderFoodMenu('all');
-            updateCartSummary();
-        };
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         // ฟังก์ชันคำนวณระยะห่างวัน (วันเข้าพัก - วันปัจจุบัน)
         function isEligibleForFoodOrder(checkinStr) {
@@ -596,19 +584,6 @@
             document.getElementById('line-dispatch-summary').classList.remove('hidden');
             document.getElementById('food-locked-banner').classList.add('hidden');
             showToast('ดำเนินการเสร็จสมบูรณ์');
-        }
-            });
-
-            const targetTab = document.getElementById(`tab-${tabName}`);
-            if (targetTab) targetTab.classList.remove('hidden');
-            
-            const activeBtn = document.getElementById(`nav-btn-${tabName}`);
-            if (activeBtn) {
-                activeBtn.classList.remove('border-transparent', 'text-slate-300', 'font-medium');
-                activeBtn.classList.add('border-rtafGold', 'text-rtafGoldLight', 'bg-rtafNavy', 'font-bold');
-            }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function toggleAgreeButton() {
@@ -713,11 +688,10 @@
         ];
 
         window.onload = function () {
+            // ปลดล็อกให้เลือกจองได้ตั้งแต่วันนี้เป็นต้นไป (18/11/2026) ไม่บังคับล่วงหน้า 4 วัน
             const today = new Date(2026, 10, 18);
-            const minDate = new Date(today);
-            minDate.setDate(today.getDate() + 4);
-            const nextDay = new Date(minDate);
-            nextDay.setDate(minDate.getDate() + 1);
+            const nextDay = new Date(today);
+            nextDay.setDate(today.getDate() + 1);
 
             const formatYMD = (d) => {
                 const y = d.getFullYear();
@@ -729,8 +703,8 @@
             const checkinInput = document.getElementById('checkin-date');
             const checkoutInput = document.getElementById('checkout-date');
             if (checkinInput) {
-                checkinInput.min = formatYMD(minDate);
-                checkinInput.value = formatYMD(minDate);
+                checkinInput.min = formatYMD(today);
+                checkinInput.value = formatYMD(today);
             }
             if (checkoutInput) {
                 checkoutInput.min = formatYMD(nextDay);
