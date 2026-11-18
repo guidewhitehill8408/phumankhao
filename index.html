@@ -56,7 +56,7 @@
     <!-- Mobile App Container -->
     <div class="w-full max-w-md bg-white shadow-2xl min-h-screen flex flex-col relative pb-8 border-x border-slate-200">
 
-        <!-- Header Bar -->
+        <!-- Header Bar (Shown after entering app) -->
         <header id="app-header" class="navy-header text-white px-5 py-4 sticky top-0 z-40 border-b-2 border-rtafGold hidden">
             <div class="flex items-center justify-between">
                 <div>
@@ -65,7 +65,7 @@
             </div>
         </header>
 
-        <!-- Navigation Bar -->
+        <!-- Navigation Bar: 1. ระเบียบ, 2. จองห้อง, 3. สั่งอาหาร -->
         <nav id="app-nav" class="bg-rtafNavyLight text-white border-b border-rtafGold/30 grid grid-cols-3 text-center sticky top-[68px] z-30 hidden">
             <button onclick="switchTab('regulations')" id="nav-btn-regulations" class="py-3 px-1 text-xs font-bold border-b-2 border-rtafGold text-rtafGoldLight bg-rtafNavy transition-all">
                 1. ระเบียบ
@@ -81,9 +81,12 @@
         <!-- Main Content Area -->
         <main class="flex-1 flex flex-col bg-slate-50">
 
-            <!-- HOME COVER PAGE -->
+            <!-- ========================================== -->
+            <!-- HOME COVER PAGE (หน้าแรก/หน้าปก)              -->
+            <!-- ========================================== -->
             <section id="tab-cover" class="flex-1 flex flex-col items-center justify-center p-6 text-center navy-header text-white space-y-6 min-h-screen">
                 <div class="space-y-6 flex flex-col items-center">
+                    <!-- Central Emblem (Station Logo matching user image) -->
                     <div class="w-52 h-52 rounded-full flex items-center justify-center shadow-2xl overflow-hidden bg-rtafNavy border-4 border-rtafGold relative">
                         <img src="https://lh3.googleusercontent.com/d/1FVL8WLFrZ_xW0Z35eDs6JH4CggGlq2uX" alt="โลโก้สถานีรายงานภูหมันขาว" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='https://placehold.co/220x220/0A192F/D4AF37?text=White+Hill';">
                     </div>
@@ -101,13 +104,16 @@
                 </div>
             </section>
 
-            <!-- 1. REGULATIONS -->
+            <!-- ========================================== -->
+            <!-- 1. STEP 1: REGULATIONS (ระเบียบ)            -->
+            <!-- ========================================== -->
             <section id="tab-regulations" class="p-4 space-y-5 hidden bg-slate-50">
                 <div class="border-l-4 border-rtafGold bg-rtafNavy text-white p-4 rounded-r-lg shadow-sm">
                     <h2 class="font-bold text-sm text-rtafGoldLight">ระเบียบการใช้บ้านพักรับรอง</h2>
                     <p class="text-xs text-slate-300 mt-1">สถานีรายงานภูหมันขาว (ห้อง 1101 - 1104) กรุณาอ่านและรับทราบระเบียบปฏิบัติก่อนทำการจอง</p>
                 </div>
 
+                <!-- Standard Regulations 1-10 -->
                 <div class="bg-white rounded-lg border border-slate-200 p-4 space-y-3">
                     <div class="border-b border-slate-200 pb-2">
                         <h3 class="font-bold text-xs uppercase tracking-wider text-rtafNavy">ข้อปฏิบัติทั่วไป (ข้อ 1 - 10)</h3>
@@ -156,6 +162,7 @@
                     </ol>
                 </div>
 
+                <!-- Highlighted Infographic Cards for Rules 11-13 -->
                 <div class="space-y-2.5">
                     <div class="flex items-center justify-between px-1">
                         <h3 class="font-bold text-xs uppercase tracking-wider text-red-800">มาตรการรักษาความปลอดภัย (ข้อห้ามเด็ดขาด)</h3>
@@ -163,6 +170,7 @@
                     </div>
 
                     <div class="bg-rtafNavy text-white rounded-lg border-2 border-rtafGold p-4 space-y-3 shadow-md">
+                        <!-- Rule 11 -->
                         <div class="flex items-center space-x-4 border-b border-slate-700 pb-3">
                             <div class="text-2xl font-extrabold text-rtafGold w-10 text-center flex-shrink-0 border-r border-rtafGold/40 pr-2">11</div>
                             <div>
@@ -171,6 +179,7 @@
                             </div>
                         </div>
 
+                        <!-- Rule 12 -->
                         <div class="flex items-center space-x-4 border-b border-slate-700 pb-3">
                             <div class="text-2xl font-extrabold text-rtafGold w-10 text-center flex-shrink-0 border-r border-rtafGold/40 pr-2">12</div>
                             <div>
@@ -179,6 +188,7 @@
                             </div>
                         </div>
 
+                        <!-- Rule 13 -->
                         <div class="flex items-center space-x-4">
                             <div class="text-2xl font-extrabold text-rtafGold w-10 text-center flex-shrink-0 border-r border-rtafGold/40 pr-2">13</div>
                             <div>
@@ -189,6 +199,7 @@
                     </div>
                 </div>
 
+                <!-- Agreement Box -->
                 <div class="bg-white border border-slate-300 p-4 rounded-lg space-y-3 shadow-sm">
                     <label class="flex items-start space-x-3 cursor-pointer">
                         <input type="checkbox" id="agree-checkbox" onchange="toggleAgreeButton()" class="mt-0.5 w-4 h-4 accent-rtafNavy rounded border-slate-400">
@@ -197,46 +208,64 @@
                         </span>
                     </label>
                     <button id="btn-to-booking" onclick="switchTab('booking')" disabled class="w-full py-3 rounded-lg font-bold text-xs tracking-wide bg-slate-300 text-slate-500 cursor-not-allowed transition-all">
-                        รับทราบและดำเนินการจองห้องพัก (ขั้นตอนที่ 2)
+                        รับทราบและดำเนินการจองห้องพัก (ขั้นตอนที่ 3)
                     </button>
                 </div>
             </section>
 
-            <!-- 2. ROOM BOOKING -->
+            <!-- ========================================== -->
+            <!-- 3. STEP 2: ROOM BOOKING (จองห้อง)           -->
+            <!-- ========================================== -->
             <section id="tab-booking" class="p-4 space-y-5 hidden bg-slate-50">
                 <div class="border-l-4 border-rtafGold bg-rtafNavy text-white p-4 rounded-r-lg shadow-sm">
                     <h2 class="font-bold text-sm text-rtafGoldLight">จองบ้านพักรับรอง (ห้อง 1101 - 1104)</h2>
-                    <p class="text-xs text-slate-300 mt-1">ตรวจสอบตารางห้องว่างจากปฏิทินระบบจองบ้าน สร.ภม. (สีแดง)</p>
+                    <p class="text-xs text-slate-300 mt-1">ตรวจสอบตารางห้องว่างจากปฏิทิน Google Calendar และระบุข้อมูลการเข้าพัก (จองล่วงหน้าอย่างน้อย 4 วัน)</p>
                 </div>
 
+                <!-- Interactive Google Calendar Link & Availability Grid -->
                 <div class="bg-white rounded-lg border border-slate-200 p-4 space-y-3 shadow-sm">
                     <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
                         <div>
-                            <h3 class="font-bold text-xs text-red-700 flex items-center space-x-1">
-                                <span class="w-2.5 h-2.5 rounded-full bg-red-600 inline-block"></span>
-                                <span>ปฏิทินระบบจองบ้าน สร.ภม.</span>
-                            </h3>
+                            <h3 class="font-bold text-xs text-rtafNavy">ปฏิทินกลางบ้านพักรับรอง (Google Calendar)</h3>
                             <p id="calendar-month-label" class="text-[11px] text-slate-500 mt-0.5">เดือน พฤศจิกายน 2026</p>
                         </div>
                         <div class="flex items-center space-x-1.5">
+                            <!-- Hidden Configuration Button -->
+                            <button type="button" onclick="toggleHostCalendarConfig()" class="hidden text-[11px] font-semibold text-rtafNavy bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 py-1 rounded transition">
+                                ตั้งค่าปฏิทินกลาง
+                            </button>
                             <a id="host-calendar-public-link" href="https://calendar.google.com/calendar/embed?src=guidewhitehill8408%40gmail.com" target="_blank" rel="noopener noreferrer" class="text-[11px] font-semibold text-rtafNavy bg-rtafGoldLight/70 hover:bg-rtafGoldLight border border-rtafGold px-2.5 py-1 rounded transition">
                                 เปิดปฏิทินบ้านพัก
                             </a>
                         </div>
                     </div>
 
+                    <!-- Host Central Google Calendar Configuration Panel (Hidden Auto-sync) -->
+                    <div id="host-calendar-config-panel" class="hidden bg-slate-50 border border-rtafGold/60 rounded p-3 space-y-2.5 text-xs">
+                        <input type="email" id="host-calendar-email" value="guidewhitehill8408@gmail.com" class="hidden">
+                    </div>
+
+                    <!-- Active Central Calendar Indicator (Hidden as requested) -->
+                    <div class="hidden bg-rtafNavy/5 border border-rtafNavy/15 rounded px-2.5 py-1.5 flex items-center justify-between text-[11px]">
+                        <span class="text-slate-600">ซิงค์ปฏิทินอัตโนมัติ: <strong id="active-host-email-display" class="text-rtafNavy">guidewhitehill8408@gmail.com</strong></span>
+                        <span id="calendar-sync-status" class="text-emerald-700 font-bold">ซิงค์สดแล้ว</span>
+                    </div>
+
+                    <!-- Month Switcher -->
                     <div class="flex items-center justify-between bg-slate-50 px-3 py-1.5 rounded border border-slate-200 text-xs">
                         <button type="button" onclick="changeCalendarMonth(-1)" class="font-bold text-rtafNavy px-2 py-0.5 hover:bg-slate-200 rounded">ก่อนหน้า</button>
                         <span id="calendar-current-title" class="font-bold text-rtafNavy">พฤศจิกายน 2026</span>
                         <button type="button" onclick="changeCalendarMonth(1)" class="font-bold text-rtafNavy px-2 py-0.5 hover:bg-slate-200 rounded">ถัดไป</button>
                     </div>
 
+                    <!-- Status Legend -->
                     <div class="grid grid-cols-3 gap-1 text-[11px] text-center py-1">
                         <div class="bg-emerald-50 text-emerald-800 border border-emerald-200 rounded py-1 font-medium">ว่างทุกห้อง (4)</div>
                         <div class="bg-amber-50 text-amber-800 border border-amber-200 rounded py-1 font-medium">ว่างบางห้อง</div>
                         <div class="bg-red-50 text-red-800 border border-red-200 rounded py-1 font-medium">เต็มทุกห้อง</div>
                     </div>
 
+                    <!-- Calendar Grid -->
                     <div class="grid grid-cols-7 gap-1 text-center text-[11px]">
                         <div class="font-bold text-slate-500 py-1">อา</div>
                         <div class="font-bold text-slate-500 py-1">จ</div>
@@ -248,11 +277,13 @@
                     </div>
                     <div id="calendar-days-grid" class="grid grid-cols-7 gap-1 text-center text-xs"></div>
 
+                    <!-- Selected Date Details Box -->
                     <div id="calendar-day-detail" class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700">
                         คลิกเลือกวันที่บนปฏิทินเพื่อตรวจสอบสถานะห้อง 1101 - 1104
                     </div>
                 </div>
 
+                <!-- Booking Form -->
                 <form id="booking-form" onsubmit="submitBooking(event)" class="bg-white rounded-lg border border-slate-200 p-4 space-y-4 shadow-sm">
                     <div class="border-b border-slate-200 pb-2">
                         <h3 class="font-bold text-xs uppercase tracking-wider text-rtafNavy">แบบฟอร์มบันทึกการจองบ้านพัก</h3>
@@ -330,6 +361,7 @@
                     </button>
                 </form>
 
+                <!-- Booking Confirmation Card -->
                 <div id="booking-confirmed-panel" class="hidden bg-emerald-50 border border-emerald-300 rounded-lg p-4 space-y-3 text-xs shadow-sm">
                     <div class="border-b border-emerald-200 pb-2">
                         <p class="font-bold text-emerald-900">บันทึกการจองเรียบร้อยแล้ว</p>
@@ -337,13 +369,15 @@
                     <div id="booking-summary-text" class="space-y-1 text-emerald-900 leading-relaxed"></div>
                     <div class="pt-1">
                         <button type="button" onclick="switchTab('food')" class="w-full py-2.5 px-3 gold-accent-btn font-bold rounded shadow-sm hover:opacity-95 transition">
-                            ดำเนินการต่อ: สั่งอาหารล่วงหน้า (ขั้นตอนที่ 3)
+                            ดำเนินการต่อ: สั่งอาหารล่วงหน้า (ขั้นตอนที่ 4)
                         </button>
                     </div>
                 </div>
             </section>
 
-            <!-- 3. FOOD ORDERING -->
+            <!-- ========================================== -->
+            <!-- 4. STEP 3: FOOD ORDERING (สั่งอาหาร)         -->
+            <!-- ========================================== -->
             <section id="tab-food" class="p-4 space-y-5 hidden bg-slate-50">
                 <div class="border-l-4 border-rtafGold bg-rtafNavy text-white p-4 rounded-r-lg shadow-sm">
                     <h2 class="font-bold text-sm text-rtafGoldLight">สั่งอาหารล่วงหน้า (แยกมื้อเช้า / มื้อเย็น)</h2>
@@ -380,6 +414,7 @@
                     </div>
                 </div>
 
+                <!-- 8 Categories Filter Bar -->
                 <div class="space-y-1.5">
                     <div class="flex items-center justify-between px-0.5">
                         <p class="text-[11px] font-bold text-slate-600">เลือกหมวดหมู่อาหาร</p>
@@ -398,8 +433,10 @@
                     </div>
                 </div>
 
+                <!-- Menu Items List -->
                 <div id="food-menu-container" class="space-y-4"></div>
 
+                <!-- Summary & Serve Time Details -->
                 <div class="bg-white rounded-lg border-2 border-rtafNavy p-4 space-y-4 shadow-sm">
                     <div class="border-b border-slate-200 pb-2 flex items-center justify-between">
                         <h3 class="font-bold text-xs uppercase tracking-wider text-rtafNavy">สรุปรายการอาหารที่สั่ง</h3>
@@ -448,6 +485,7 @@
                     </button>
                 </div>
 
+                <!-- Confirmation Modal -->
                 <div id="food-confirm-modal" class="hidden fixed inset-0 bg-slate-900/75 z-50 flex items-center justify-center p-4">
                     <div class="bg-white w-full max-w-sm rounded-lg border-2 border-rtafGold shadow-xl overflow-hidden">
                         <div class="bg-rtafNavy text-rtafGoldLight px-4 py-3 border-b border-rtafGold">
@@ -464,6 +502,7 @@
                     </div>
                 </div>
 
+                <!-- Success Card -->
                 <div id="line-dispatch-summary" class="hidden bg-emerald-50 border-2 border-emerald-300 rounded-lg p-4 space-y-3 shadow-sm">
                     <div class="border-b border-emerald-200 pb-2">
                         <p class="text-[11px] font-bold uppercase text-emerald-800">บันทึกสำเร็จ</p>
@@ -486,6 +525,7 @@
     </div>
 
     <script>
+        // Define core functions at the very top of script execution context
         function enterApp() {
             const cover = document.getElementById('tab-cover');
             const header = document.getElementById('app-header');
@@ -546,67 +586,7 @@
             { id: 'f02', category: 'ผัด/ทอด', name: 'ไข่เจียวหมูสับ', price: 70, priceLabel: '70 บาท' },
             { id: 'f03', category: 'ผัด/ทอด', name: 'ไข่เจียวทะเล', price: 80, priceLabel: '80 บาท' },
             { id: 'f04', category: 'ผัด/ทอด', name: 'แหนมซี่โครงหมูทอด', price: 150, priceLabel: '150 บาท' },
-            { id: 'f05', category: 'ผัด/ทอด', name: 'ปีกไก่ทอดเกลือ', price: 150, priceLabel: '150 บาท' },
-            { id: 'f06', category: 'ผัด/ทอด', name: 'ไก่ผัดเม็ดมะม่วงหิมพานต์', price: 180, priceLabel: '180 บาท' },
-            { id: 'f07', category: 'ผัด/ทอด', name: 'ทะเลผัดฉ่า', price: 200, priceLabel: '200 บาท' },
-            { id: 'f08', category: 'ผัด/ทอด', name: 'ไข่เยี่ยวม้ากะเพรากรอบ', price: 150, priceLabel: '150 บาท' },
-            { id: 'f09', category: 'ผัด/ทอด', name: 'กะหล่ำปลีผัดน้ำปลา', price: 80, priceLabel: '80 บาท' },
-            { id: 'f10', category: 'ผัด/ทอด', name: 'ผัดผักบุ้งไฟแดง', price: 80, priceLabel: '80 บาท' },
-            { id: 'f11', category: 'ผัด/ทอด', name: 'คะน้าไฟแดง', price: 80, priceLabel: '80 บาท' },
-            { id: 'f12', category: 'ผัด/ทอด', name: 'ผัดยอดฟักแม้ว', price: 80, priceLabel: '80 บาท' },
-            { id: 'f13', category: 'ผัด/ทอด', name: 'ผัดผักรวม หมู', price: 150, priceLabel: '150 บาท' },
-            { id: 'f14', category: 'ผัด/ทอด', name: 'ผัดผักรวม กุ้ง', price: 150, priceLabel: '150 บาท' },
-            { id: 'f15', category: 'ผัด/ทอด', name: 'ผัดผักรวม ปลาหมึก', price: 150, priceLabel: '150 บาท' },
-            { id: 'f16', category: 'ผัด/ทอด', name: 'หมูป่าผัดเผ็ด', price: 150, priceLabel: '150 บาท' },
-            { id: 'f17', category: 'ผัด/ทอด', name: 'ปลาหมึกผัดไข่เค็ม', price: 150, priceLabel: '150 บาท' },
-            { id: 'f18', category: 'ผัด/ทอด', name: 'ปลาทับทิมทอดกระเทียม', price: 235, priceLabel: '220 - 250 บาท' },
-            { id: 'f19', category: 'ผัด/ทอด', name: 'ทอดมันปลากราย', price: 150, priceLabel: '150 บาท' },
-            { id: 'a01', category: 'กับแกล้ม', name: 'ออเดิร์ฟ', price: 150, priceLabel: '150 บาท' },
-            { id: 'a02', category: 'กับแกล้ม', name: 'ถั่วทอด', price: 80, priceLabel: '80 บาท' },
-            { id: 'a03', category: 'กับแกล้ม', name: 'เม็ดมะม่วงหิมพานต์ทอด', price: 150, priceLabel: '150 บาท' },
-            { id: 'a04', category: 'กับแกล้ม', name: 'ข้าวเกรียบกุ้งทอด', price: 70, priceLabel: '70 บาท' },
-            { id: 'a05', category: 'กับแกล้ม', name: 'ไส้กรอกอีสาน', price: 120, priceLabel: '120 บาท' },
-            { id: 'a06', category: 'กับแกล้ม', name: 'แหนมทรงเครื่อง', price: 120, priceLabel: '120 บาท' },
-            { id: 'i01', category: 'อาหารอีสาน', name: 'ลาบหมู (เล็ก)', price: 80, priceLabel: '80 บาท' },
-            { id: 'i02', category: 'อาหารอีสาน', name: 'ลาบหมู (ใหญ่)', price: 150, priceLabel: '150 บาท' },
-            { id: 'i03', category: 'อาหารอีสาน', name: 'ลาบไก่ (เล็ก)', price: 80, priceLabel: '80 บาท' },
-            { id: 'i04', category: 'อาหารอีสาน', name: 'ลาบไก่ (ใหญ่)', price: 150, priceLabel: '150 บาท' },
-            { id: 'i05', category: 'อาหารอีสาน', name: 'น้ำตกหมู (เล็ก)', price: 80, priceLabel: '80 บาท' },
-            { id: 'i06', category: 'อาหารอีสาน', name: 'น้ำตกหมู (ใหญ่)', price: 150, priceLabel: '150 บาท' },
-            { id: 'i07', category: 'อาหารอีสาน', name: 'คอหมูย่าง', price: 150, priceLabel: '150 บาท' },
-            { id: 's01', category: 'ต้ม/แกง', name: 'แกงป่า ไก่', price: 150, priceLabel: '150 บาท' },
-            { id: 's02', category: 'ต้ม/แกง', name: 'แกงป่า หมู', price: 150, priceLabel: '150 บาท' },
-            { id: 's03', category: 'ต้ม/แกง', name: 'แกงส้มชะอมกุ้ง', price: 180, priceLabel: '180 บาท' },
-            { id: 's04', category: 'ต้ม/แกง', name: 'ต้มจืดเต้าหู้หมูสับ', price: 150, priceLabel: '150 บาท' },
-            { id: 's05', category: 'ต้ม/แกง', name: 'ต้มยำไก่บ้าน', price: 150, priceLabel: '150 บาท' },
-            { id: 's06', category: 'ต้ม/แกง', name: 'ต้มจืดกระดูกอ่อนมะระแม้ว', price: 150, priceLabel: '150 บาท' },
-            { id: 's07', category: 'ต้ม/แกง', name: 'ต้มแซบกระดูกอ่อน', price: 150, priceLabel: '150 บาท' },
-            { id: 's08', category: 'ต้ม/แกง', name: 'ต้มยำรวมมิตรทะเล (ถ้วย)', price: 100, priceLabel: '100 บาท' },
-            { id: 's09', category: 'ต้ม/แกง', name: 'ต้มยำรวมมิตรทะเล (หม้อ)', price: 200, priceLabel: '200 บาท' },
-            { id: 'y01', category: 'ยำ/ย่าง', name: 'ยำรวมมิตรทะเล (เล็ก)', price: 120, priceLabel: '120 บาท' },
-            { id: 'y02', category: 'ยำ/ย่าง', name: 'ยำรวมมิตรทะเล (ใหญ่)', price: 200, priceLabel: '200 บาท' },
-            { id: 'y03', category: 'ยำ/ย่าง', name: 'หมูมะนาว', price: 150, priceLabel: '150 บาท' },
-            { id: 'y04', category: 'ยำ/ย่าง', name: 'แดดเดียวทอด', price: 150, priceLabel: '150 บาท' },
-            { id: 'y05', category: 'ยำ/ย่าง', name: 'หมูย่างพริกไทยดำ', price: 150, priceLabel: '150 บาท' },
-            { id: 'y06', category: 'ยำ/ย่าง', name: 'กุ้งแช่น้ำปลา', price: 200, priceLabel: '200 บาท' },
-            { id: 'd01', category: 'อาหารจานเดียว', name: 'ราดหน้า หมู/ไก่', price: 60, priceLabel: '60 บาท' },
-            { id: 'd02', category: 'อาหารจานเดียว', name: 'ราดหน้าทะเล', price: 70, priceLabel: '70 บาท' },
-            { id: 'd03', category: 'อาหารจานเดียว', name: 'ข้าวผัด หมู/ไก่ (เล็ก)', price: 60, priceLabel: '60 บาท' },
-            { id: 'd04', category: 'อาหารจานเดียว', name: 'ข้าวผัดทะเล (เล็ก)', price: 60, priceLabel: '60 บาท' },
-            { id: 'd05', category: 'อาหารจานเดียว', name: 'ข้าวกะเพรา หมู/ไก่', price: 60, priceLabel: '60 บาท' },
-            { id: 'd06', category: 'อาหารจานเดียว', name: 'ข้าวกะเพราทะเล', price: 70, priceLabel: '70 บาท' },
-            { id: 'r01', category: 'ข้าว', name: 'ข้าวเปล่า (จาน)', price: 15, priceLabel: '15 บาท' },
-            { id: 'r02', category: 'ข้าว', name: 'ข้าวเปล่า (โถ)', price: 60, priceLabel: '60 บาท' },
-            { id: 'r03', category: 'ข้าว', name: 'ข้าวผัด หมู/ไก่ (ใหญ่)', price: 200, priceLabel: '200 บาท' },
-            { id: 'r04', category: 'ข้าว', name: 'ข้าวผัดทะเล (ใหญ่)', price: 250, priceLabel: '250 บาท' },
-            { id: 'b01', category: 'เครื่องดื่ม', name: 'น้ำอัดลมขวดใหญ่', price: 35, priceLabel: '35 บาท' },
-            { id: 'b02', category: 'เครื่องดื่ม', name: 'น้ำสิงห์ขวดใหญ่', price: 20, priceLabel: '20 บาท' },
-            { id: 'b03', category: 'เครื่องดื่ม', name: 'น้ำสิงห์ขวดเล็ก', price: 10, priceLabel: '10 บาท' },
-            { id: 'b04', category: 'เครื่องดื่ม', name: 'โซดา', price: 10, priceLabel: '10 บาท' },
-            { id: 'b05', category: 'เครื่องดื่ม', name: 'เบียร์ช้าง', price: 70, priceLabel: '70 บาท' },
-            { id: 'b06', category: 'เครื่องดื่ม', name: 'เบียร์ลีโอ', price: 75, priceLabel: '75 บาท' },
-            { id: 'b07', category: 'เครื่องดื่ม', name: 'เบียร์สิงห์', price: 80, priceLabel: '80 บาท' },
-            { id: 'b08', category: 'เครื่องดื่ม', name: 'หงส์ทอง', price: 290, priceLabel: '290 บาท' }
+            { id: 'f05', category: 'ผัด/ทอด', name: 'ปีกไก่ทอดเกลือ', price: 150, priceLabel: '150 บาท' }
         ];
 
         let cart = { breakfast: {}, dinner: {} };
@@ -641,24 +621,26 @@
             '2026-12-05': ['1101', '1102', '1103', '1104']
         };
         let occupiedRoomsByDate = JSON.parse(localStorage.getItem('phumankhao_central_calendar')) || defaultOccupiedRooms;
+        
+        // เก็บข้อมูลสำหรับระบบภายใน (ไม่แสดงชื่อคนจองบนปฏิทินสาธารณะ)
         let calendarEventDetails = JSON.parse(localStorage.getItem('phumankhao_calendar_events')) || {
-            '2026-11-01': ['[ระบบจองบ้าน สร.ภม.] ร.ต.ชำนาญ ดีประเสริฐ'],
-            '2026-11-05': ['[ระบบจองบ้าน สร.ภม.] ร.ท.สิริวัฒน์'],
-            '2026-11-06': ['[ระบบจองบ้าน สร.ภม.] ร.อ.อภิชาติ'],
-            '2026-11-13': ['[ระบบจองบ้าน สร.ภม.] น.อ.กิตติกรณ์'],
-            '2026-11-15': ['[ระบบจองบ้าน สร.ภม.] คณะนักเรียน คปอ.'],
-            '2026-11-16': ['[ระบบจองบ้าน สร.ภม.] ร.ท.จีระศักดิ์'],
-            '2026-11-18': ['[ระบบจองบ้าน สร.ภม.] ขรก.ศคปอ.ดม.'],
-            '2026-11-20': ['[ระบบจองบ้าน สร.ภม.] น.ต.ยุทธน'],
-            '2026-11-21': ['[ระบบจองบ้าน สร.ภม.] น.ท.นฤอรรถ'],
-            '2026-11-22': ['[ระบบจองบ้าน สร.ภม.] ทอดกฐินวัดหลวงพ่อกวย'],
-            '2026-11-23': ['[ระบบจองบ้าน สร.ภม.] จองเต็มอัตรา'],
-            '2026-11-25': ['[ระบบจองบ้าน สร.ภม.] ห้อง 1103'],
-            '2026-11-27': ['[ระบบจองบ้าน สร.ภม.] พ.อ.อ.ทนุ'],
-            '2026-11-28': ['[ระบบจองบ้าน สร.ภม.] ร.ท.บุญยง'],
-            '2026-12-01': ['[ระบบจองบ้าน สร.ภม.] ร.ท.ธิติ ภูภักดี'],
-            '2026-12-03': ['[ระบบจองบ้าน สร.ภม.] เสี่ยแบงค์ ทอ.'],
-            '2026-12-05': ['[ระบบจองบ้าน สร.ภม.] น.ท.นฤอรรถ ศรีพุ่มไก่']
+            '2026-11-01': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-11-05': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-11-06': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-11-13': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-11-15': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-11-16': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-11-18': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-11-20': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-11-21': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-11-22': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-11-23': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-11-25': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-11-27': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-11-28': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-12-01': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-12-03': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)'],
+            '2026-12-05': ['[ระบบจองบ้าน สร.ภม.] (สงวนสิทธิ์ข้อมูลผู้พัก)']
         };
 
         const thaiMonths = [
@@ -737,7 +719,7 @@
                     colorClass = 'bg-red-50 text-red-900 border-red-200 hover:bg-red-100';
                 }
 
-                // แสดงเฉพาะสถานะห้องว่าง (เช่น ว่าง 4, เต็ม) โดยไม่มีข้อความชื่อผู้จองรกในตาราง
+                // แสดงเฉพาะสถานะห้องว่าง (เช่น ว่าง 4, เต็ม) โดยซ่อนชื่อผู้จองทั้งหมดบนปฏิทิน
                 let badgeText = `ว่าง ${availableCount}`;
                 if (availableCount === 0) {
                     badgeText = 'เต็ม';
@@ -747,19 +729,18 @@
                 dayBtn.type = 'button';
                 dayBtn.className = `py-2 px-0.5 rounded border font-semibold transition flex flex-col items-center justify-center ${colorClass}`;
                 dayBtn.innerHTML = `<span>${day}</span><span class="text-[10px] font-bold mt-0.5">${badgeText}</span>`;
-                dayBtn.onclick = () => selectCalendarDate(dateStr, occupied, events);
+                dayBtn.onclick = () => selectCalendarDate(dateStr, occupied);
                 grid.appendChild(dayBtn);
             }
         }
 
-        function selectCalendarDate(dateStr, occupied, events) {
+        function selectCalendarDate(dateStr, occupied) {
             const allRooms = ['1101', '1102', '1103', '1104'];
             const availableRooms = allRooms.filter(r => !occupied.includes(r));
             const detailBox = document.getElementById('calendar-day-detail');
 
-            let eventInfo = events.length > 0 ? `<br><strong class="text-red-700">รายการระบบจองบ้าน สร.ภม. (สีแดง):</strong> ${events.join(', ')}` : '';
-            
-            detailBox.innerHTML = `<span class="font-bold text-rtafNavy">วันที่ ${dateStr}:</span> ว่าง ${availableRooms.length} ห้อง (<span class="font-bold text-emerald-800">ห้อง ${availableRooms.join(', ')}</span>)${eventInfo}`;
+            // แสดงผลเฉพาะจำนวนห้องว่าง โดยซ่อนชื่อผู้จองเพื่อความเป็นส่วนตัว
+            detailBox.innerHTML = `<span class="font-bold text-rtafNavy">วันที่ ${dateStr}:</span> ว่าง ${availableRooms.length} ห้อง (<span class="font-bold text-emerald-800">ห้อง ${availableRooms.join(', ')}</span>)`;
             
             const checkinInput = document.getElementById('checkin-date');
             if (checkinInput && dateStr >= checkinInput.min) {
@@ -773,15 +754,12 @@
         }
 
         function updateRoomAvailabilityByDate() {
-            const checkinInput = document.getElementById('checkin-date');
-            if (!checkinInput) return;
-            const selectedDate = checkinInput.value;
+            const selectedDate = document.getElementById('checkin-date').value;
             const occupied = occupiedRoomsByDate[selectedDate] || [];
             ['1101', '1102', '1103', '1104'].forEach(room => {
                 const isOccupied = occupied.includes(room);
                 const label = document.getElementById(`label-room-${room}`);
                 const statusSpan = document.getElementById(`status-${room}`);
-                if (!label || !statusSpan) return;
                 const checkbox = label.querySelector('input[type="checkbox"]');
 
                 if (isOccupied) {
@@ -829,15 +807,13 @@
             updateRoomAvailabilityByDate();
 
             const foodRoomSelect = document.getElementById('food-room-select');
-            if (foodRoomSelect) {
-                foodRoomSelect.innerHTML = '';
-                selectedRooms.forEach(r => {
-                    const opt = document.createElement('option');
-                    opt.value = `ห้อง ${r}`;
-                    opt.innerText = `ห้อง ${r}`;
-                    foodRoomSelect.appendChild(opt);
-                });
-            }
+            foodRoomSelect.innerHTML = '';
+            selectedRooms.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = `ห้อง ${r}`;
+                opt.innerText = `ห้อง ${r}`;
+                foodRoomSelect.appendChild(opt);
+            });
 
             document.getElementById('booking-summary-text').innerHTML = `
                 <p><strong>ห้องที่จอง:</strong> ห้อง ${selectedRooms.join(', ')}</p>
@@ -847,14 +823,12 @@
                 <p><strong>ผู้แนะนำจอง:</strong> ${recommenderName}</p>
             `;
             document.getElementById('booking-confirmed-panel').classList.remove('hidden');
-            showToast('บันทึกการจองและอัปเดตปฏิทินระบบจองบ้าน สร.ภม. เรียบร้อยแล้ว');
+            showToast('บันทึกการจองและอัปเดตปฏิทินกลางเรียบร้อยแล้ว');
         }
 
         function updateMealSelection() {
-            const checkedRadio = document.querySelector('input[name="meal-type"]:checked');
-            if (checkedRadio) currentMeal = checkedRadio.value;
-            const indicator = document.getElementById('active-meal-indicator');
-            if (indicator) indicator.innerText = currentMeal === 'breakfast' ? 'กำลังเลือกเมนู: อาหารเช้า' : 'กำลังเลือกเมนู: อาหารเย็น';
+            currentMeal = document.querySelector('input[name="meal-type"]:checked').value;
+            document.getElementById('active-meal-indicator').innerText = currentMeal === 'breakfast' ? 'กำลังเลือกเมนู: อาหารเช้า' : 'กำลังเลือกเมนู: อาหารเย็น';
             renderFoodMenu(currentCategoryFilter);
         }
 
@@ -884,7 +858,7 @@
                 if (itemsInCat.length === 0) return;
 
                 const catBlock = document.createElement('div');
-                catBlock.className = 'bg-white rounded-lg border border-slate-200 p-3.5 space-y-2.5 shadow-sm';
+                catBlock.className = 'bg-white rounded-lg border border-slate-200 p-4 space-y-3 shadow-sm';
                 catBlock.innerHTML = `<div class="border-b border-slate-200 pb-1.5"><h4 class="font-bold text-xs uppercase tracking-wider text-rtafNavy">ประเภท${cat}</h4></div>`;
 
                 const listDiv = document.createElement('div');
@@ -895,7 +869,7 @@
                     const dQty = cart.dinner[item.id] || 0;
 
                     const row = document.createElement('div');
-                    row.className = 'py-2 flex items-center justify-between text-xs';
+                    row.className = 'py-2.5 flex items-center justify-between text-xs';
                     row.innerHTML = `
                         <div>
                             <p class="font-semibold text-slate-800">${item.name}</p>
@@ -928,72 +902,57 @@
             const bIds = Object.keys(cart.breakfast);
             const dIds = Object.keys(cart.dinner);
 
-            const bCountEl = document.getElementById('badge-breakfast-count');
-            const dCountEl = document.getElementById('badge-dinner-count');
-            if (bCountEl) bCountEl.innerText = bIds.reduce((sum, id) => sum + cart.breakfast[id], 0);
-            if (dCountEl) dCountEl.innerText = dIds.reduce((sum, id) => sum + cart.dinner[id], 0);
+            document.getElementById('badge-breakfast-count').innerText = bIds.reduce((sum, id) => sum + cart.breakfast[id], 0);
+            document.getElementById('badge-dinner-count').innerText = dIds.reduce((sum, id) => sum + cart.dinner[id], 0);
 
             const bListEl = document.getElementById('cart-breakfast-list');
             const dListEl = document.getElementById('cart-dinner-list');
 
             let bSubtotal = 0;
-            if (bListEl) {
-                if (bIds.length === 0) {
-                    bListEl.innerHTML = '<p class="text-slate-400 py-2 text-center">ยังไม่มีรายการอาหารเช้า</p>';
-                } else {
-                    bListEl.innerHTML = '';
-                    bIds.forEach(id => {
-                        const item = menuItems.find(m => m.id === id);
-                        const qty = cart.breakfast[id];
-                        const sub = item.price * qty;
-                        bSubtotal += sub;
-                        const div = document.createElement('div');
-                        div.className = 'py-1.5 flex items-center justify-between';
-                        div.innerHTML = `<span class="text-slate-700">${item.name} x ${qty}</span><span class="font-bold text-rtafNavy">${sub.toLocaleString()} บาท</span>`;
-                        bListEl.appendChild(div);
-                    });
-                }
+            if (bIds.length === 0) {
+                bListEl.innerHTML = '<p class="text-slate-400 py-2 text-center">ยังไม่มีรายการอาหารเช้า</p>';
+            } else {
+                bListEl.innerHTML = '';
+                bIds.forEach(id => {
+                    const item = menuItems.find(m => m.id === id);
+                    const qty = cart.breakfast[id];
+                    const sub = item.price * qty;
+                    bSubtotal += sub;
+                    const div = document.createElement('div');
+                    div.className = 'py-1.5 flex items-center justify-between';
+                    div.innerHTML = `<span class="text-slate-700">${item.name} x ${qty}</span><span class="font-bold text-rtafNavy">${sub.toLocaleString()} บาท</span>`;
+                    bListEl.appendChild(div);
+                });
             }
 
             let dSubtotal = 0;
-            if (dListEl) {
-                if (dIds.length === 0) {
-                    dListEl.innerHTML = '<p class="text-slate-400 py-2 text-center">ยังไม่มีรายการอาหารเย็น</p>';
-                } else {
-                    dListEl.innerHTML = '';
-                    dIds.forEach(id => {
-                        const item = menuItems.find(m => m.id === id);
-                        const qty = cart.dinner[id];
-                        const sub = item.price * qty;
-                        dSubtotal += sub;
-                        const div = document.createElement('div');
-                        div.className = 'py-1.5 flex items-center justify-between';
-                        div.innerHTML = `<span class="text-slate-700">${item.name} x ${qty}</span><span class="font-bold text-rtafNavy">${sub.toLocaleString()} บาท</span>`;
-                        dListEl.appendChild(div);
-                    });
-                }
+            if (dIds.length === 0) {
+                dListEl.innerHTML = '<p class="text-slate-400 py-2 text-center">ยังไม่มีรายการอาหารเย็น</p>';
+            } else {
+                dListEl.innerHTML = '';
+                dIds.forEach(id => {
+                    const item = menuItems.find(m => m.id === id);
+                    const qty = cart.dinner[id];
+                    const sub = item.price * qty;
+                    dSubtotal += sub;
+                    const div = document.createElement('div');
+                    div.className = 'py-1.5 flex items-center justify-between';
+                    div.innerHTML = `<span class="text-slate-700">${item.name} x ${qty}</span><span class="font-bold text-rtafNavy">${sub.toLocaleString()} บาท</span>`;
+                    dListEl.appendChild(div);
+                });
             }
 
-            const bSubEl = document.getElementById('breakfast-subtotal');
-            const dSubEl = document.getElementById('dinner-subtotal');
-            const totalEl = document.getElementById('cart-total-amount');
-            if (bSubEl) bSubEl.innerText = `${bSubtotal.toLocaleString()} บาท`;
-            if (dSubEl) dSubEl.innerText = `${dSubtotal.toLocaleString()} บาท`;
-            if (totalEl) totalEl.innerText = `${(bSubtotal + dSubtotal).toLocaleString()} บาท`;
+            document.getElementById('breakfast-subtotal').innerText = `${bSubtotal.toLocaleString()} บาท`;
+            document.getElementById('dinner-subtotal').innerText = `${dSubtotal.toLocaleString()} บาท`;
+            document.getElementById('cart-total-amount').innerText = `${(bSubtotal + dSubtotal).toLocaleString()} บาท`;
         }
 
         function buildOrderSummaryMessage() {
-            const roomEl = document.getElementById('food-room-select');
-            const room = roomEl ? roomEl.value : 'ห้อง 1101';
-            const bTimeEl = document.getElementById('breakfast-serve-time');
-            const dTimeEl = document.getElementById('dinner-serve-time');
-            const extraEl = document.getElementById('food-extra-details');
-
-            const bTime = bTimeEl ? bTimeEl.value.trim() || 'ตามเวลาปกติ' : 'ตามเวลาปกติ';
-            const dTime = dTimeEl ? dTimeEl.value.trim() || 'ตามเวลาปกติ' : 'ตามเวลาปกติ';
-            const extra = extraEl ? extraEl.value.trim() || '-' : '-';
-            const checkinEl = document.getElementById('checkin-date');
-            const guestInfo = bookingState ? `หัวหน้าคณะ: ${bookingState.headName} (โทร. ${bookingState.phone})\nวันที่เข้าพัก: ${bookingState.checkin}` : `วันที่เข้าพัก: ${checkinEl ? checkinEl.value : '-'}`;
+            const room = document.getElementById('food-room-select').value;
+            const bTime = document.getElementById('breakfast-serve-time').value.trim() || 'ตามเวลาปกติ';
+            const dTime = document.getElementById('dinner-serve-time').value.trim() || 'ตามเวลาปกติ';
+            const extra = document.getElementById('food-extra-details').value.trim() || '-';
+            const guestInfo = bookingState ? `หัวหน้าคณะ: ${bookingState.headName} (โทร. ${bookingState.phone})\nวันที่เข้าพัก: ${bookingState.checkin}` : `วันที่เข้าพัก: ${document.getElementById('checkin-date').value || '-'}`;
 
             let bLines = [], bTotal = 0;
             Object.keys(cart.breakfast).forEach((id, idx) => {
@@ -1065,9 +1024,7 @@
 
         function showToast(message) {
             const banner = document.getElementById('toast-banner');
-            const textEl = document.getElementById('toast-text');
-            if (!banner || !textEl) return;
-            textEl.innerText = message;
+            document.getElementById('toast-text').innerText = message;
             banner.classList.remove('opacity-0');
             banner.classList.add('opacity-100');
             clearTimeout(window._toastTimer);
@@ -1079,4 +1036,3 @@
     </script>
 </body>
 </html>
-```eof
