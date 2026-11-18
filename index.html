@@ -56,7 +56,7 @@
     <!-- Mobile App Container -->
     <div class="w-full max-w-md bg-white shadow-2xl min-h-screen flex flex-col relative pb-8 border-x border-slate-200">
 
-        <!-- Header Bar (Shown after entering app) -->
+        <!-- Header Bar -->
         <header id="app-header" class="navy-header text-white px-5 py-4 sticky top-0 z-40 border-b-2 border-rtafGold hidden">
             <div class="flex items-center justify-between">
                 <div>
@@ -65,7 +65,7 @@
             </div>
         </header>
 
-        <!-- Navigation Bar: 1. ระเบียบ, 2. จองห้อง, 3. สั่งอาหาร -->
+        <!-- Navigation Bar -->
         <nav id="app-nav" class="bg-rtafNavyLight text-white border-b border-rtafGold/30 grid grid-cols-3 text-center sticky top-[68px] z-30 hidden">
             <button onclick="switchTab('regulations')" id="nav-btn-regulations" class="py-3 px-1 text-xs font-bold border-b-2 border-rtafGold text-rtafGoldLight bg-rtafNavy transition-all">
                 1. ระเบียบ
@@ -81,12 +81,9 @@
         <!-- Main Content Area -->
         <main class="flex-1 flex flex-col bg-slate-50">
 
-            <!-- ========================================== -->
-            <!-- HOME COVER PAGE (หน้าแรก/หน้าปก)              -->
-            <!-- ========================================== -->
+            <!-- HOME COVER PAGE -->
             <section id="tab-cover" class="flex-1 flex flex-col items-center justify-center p-6 text-center navy-header text-white space-y-6 min-h-screen">
                 <div class="space-y-6 flex flex-col items-center">
-                    <!-- Central Emblem (Station Logo matching user image) -->
                     <div class="w-52 h-52 rounded-full flex items-center justify-center shadow-2xl overflow-hidden bg-rtafNavy border-4 border-rtafGold relative">
                         <img src="https://lh3.googleusercontent.com/d/1FVL8WLFrZ_xW0Z35eDs6JH4CggGlq2uX" alt="โลโก้สถานีรายงานภูหมันขาว" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='https://placehold.co/220x220/0A192F/D4AF37?text=White+Hill';">
                     </div>
@@ -104,16 +101,13 @@
                 </div>
             </section>
 
-            <!-- ========================================== -->
-            <!-- 1. STEP 1: REGULATIONS (ระเบียบ)            -->
-            <!-- ========================================== -->
+            <!-- 1. REGULATIONS -->
             <section id="tab-regulations" class="p-4 space-y-5 hidden bg-slate-50">
                 <div class="border-l-4 border-rtafGold bg-rtafNavy text-white p-4 rounded-r-lg shadow-sm">
                     <h2 class="font-bold text-sm text-rtafGoldLight">ระเบียบการใช้บ้านพักรับรอง</h2>
                     <p class="text-xs text-slate-300 mt-1">สถานีรายงานภูหมันขาว (ห้อง 1101 - 1104) กรุณาอ่านและรับทราบระเบียบปฏิบัติก่อนทำการจอง</p>
                 </div>
 
-                <!-- Standard Regulations 1-10 -->
                 <div class="bg-white rounded-lg border border-slate-200 p-4 space-y-3">
                     <div class="border-b border-slate-200 pb-2">
                         <h3 class="font-bold text-xs uppercase tracking-wider text-rtafNavy">ข้อปฏิบัติทั่วไป (ข้อ 1 - 10)</h3>
@@ -162,7 +156,6 @@
                     </ol>
                 </div>
 
-                <!-- Highlighted Infographic Cards for Rules 11-13 -->
                 <div class="space-y-2.5">
                     <div class="flex items-center justify-between px-1">
                         <h3 class="font-bold text-xs uppercase tracking-wider text-red-800">มาตรการรักษาความปลอดภัย (ข้อห้ามเด็ดขาด)</h3>
@@ -170,7 +163,6 @@
                     </div>
 
                     <div class="bg-rtafNavy text-white rounded-lg border-2 border-rtafGold p-4 space-y-3 shadow-md">
-                        <!-- Rule 11 -->
                         <div class="flex items-center space-x-4 border-b border-slate-700 pb-3">
                             <div class="text-2xl font-extrabold text-rtafGold w-10 text-center flex-shrink-0 border-r border-rtafGold/40 pr-2">11</div>
                             <div>
@@ -179,7 +171,6 @@
                             </div>
                         </div>
 
-                        <!-- Rule 12 -->
                         <div class="flex items-center space-x-4 border-b border-slate-700 pb-3">
                             <div class="text-2xl font-extrabold text-rtafGold w-10 text-center flex-shrink-0 border-r border-rtafGold/40 pr-2">12</div>
                             <div>
@@ -188,7 +179,6 @@
                             </div>
                         </div>
 
-                        <!-- Rule 13 -->
                         <div class="flex items-center space-x-4">
                             <div class="text-2xl font-extrabold text-rtafGold w-10 text-center flex-shrink-0 border-r border-rtafGold/40 pr-2">13</div>
                             <div>
@@ -199,7 +189,6 @@
                     </div>
                 </div>
 
-                <!-- Agreement Box -->
                 <div class="bg-white border border-slate-300 p-4 rounded-lg space-y-3 shadow-sm">
                     <label class="flex items-start space-x-3 cursor-pointer">
                         <input type="checkbox" id="agree-checkbox" onchange="toggleAgreeButton()" class="mt-0.5 w-4 h-4 accent-rtafNavy rounded border-slate-400">
@@ -208,25 +197,22 @@
                         </span>
                     </label>
                     <button id="btn-to-booking" onclick="switchTab('booking')" disabled class="w-full py-3 rounded-lg font-bold text-xs tracking-wide bg-slate-300 text-slate-500 cursor-not-allowed transition-all">
-                        รับทราบและดำเนินการจองห้องพัก (ขั้นตอนที่ 3)
+                        รับทราบและดำเนินการจองห้องพัก (ขั้นตอนที่ 2)
                     </button>
                 </div>
             </section>
 
-            <!-- ========================================== -->
-            <!-- 3. STEP 2: ROOM BOOKING (จองห้อง)           -->
-            <!-- ========================================== -->
+            <!-- 2. ROOM BOOKING -->
             <section id="tab-booking" class="p-4 space-y-5 hidden bg-slate-50">
                 <div class="border-l-4 border-rtafGold bg-rtafNavy text-white p-4 rounded-r-lg shadow-sm">
                     <h2 class="font-bold text-sm text-rtafGoldLight">จองบ้านพักรับรอง (ห้อง 1101 - 1104)</h2>
-                    <p class="text-xs text-slate-300 mt-1">ตรวจสอบตารางห้องว่างจากปฏิทิน Google Calendar และระบุข้อมูลการเข้าพัก (จองล่วงหน้าอย่างน้อย 4 วัน)</p>
+                    <p class="text-xs text-slate-300 mt-1">ตรวจสอบตารางห้องว่างจากปฏิทินระบบจองบ้าน สร.ภม. และระบุข้อมูลการเข้าพัก</p>
                 </div>
 
-                <!-- Interactive Google Calendar Link & Availability Grid -->
                 <div class="bg-white rounded-lg border border-slate-200 p-4 space-y-3 shadow-sm">
                     <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
                         <div>
-                            <h3 class="font-bold text-xs text-rtafNavy">ปฏิทินกลางบ้านพักรับรอง (Google Calendar)</h3>
+                            <h3 class="font-bold text-xs text-rtafNavy">ปฏิทินระบบจองบ้าน สร.ภม.</h3>
                             <p id="calendar-month-label" class="text-[11px] text-slate-500 mt-0.5">เดือน พฤศจิกายน 2026</p>
                         </div>
                         <div class="flex items-center space-x-1.5">
@@ -236,21 +222,18 @@
                         </div>
                     </div>
 
-                    <!-- Month Switcher -->
                     <div class="flex items-center justify-between bg-slate-50 px-3 py-1.5 rounded border border-slate-200 text-xs">
                         <button type="button" onclick="changeCalendarMonth(-1)" class="font-bold text-rtafNavy px-2 py-0.5 hover:bg-slate-200 rounded">ก่อนหน้า</button>
                         <span id="calendar-current-title" class="font-bold text-rtafNavy">พฤศจิกายน 2026</span>
                         <button type="button" onclick="changeCalendarMonth(1)" class="font-bold text-rtafNavy px-2 py-0.5 hover:bg-slate-200 rounded">ถัดไป</button>
                     </div>
 
-                    <!-- Status Legend -->
                     <div class="grid grid-cols-3 gap-1 text-[11px] text-center py-1">
                         <div class="bg-emerald-50 text-emerald-800 border border-emerald-200 rounded py-1 font-medium">ว่างทุกห้อง (4)</div>
                         <div class="bg-amber-50 text-amber-800 border border-amber-200 rounded py-1 font-medium">ว่างบางห้อง</div>
                         <div class="bg-red-50 text-red-800 border border-red-200 rounded py-1 font-medium">เต็มทุกห้อง</div>
                     </div>
 
-                    <!-- Calendar Grid -->
                     <div class="grid grid-cols-7 gap-1 text-center text-[11px]">
                         <div class="font-bold text-slate-500 py-1">อา</div>
                         <div class="font-bold text-slate-500 py-1">จ</div>
@@ -262,13 +245,11 @@
                     </div>
                     <div id="calendar-days-grid" class="grid grid-cols-7 gap-1 text-center text-xs"></div>
 
-                    <!-- Selected Date Details Box -->
                     <div id="calendar-day-detail" class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700">
                         คลิกเลือกวันที่บนปฏิทินเพื่อตรวจสอบสถานะห้อง 1101 - 1104
                     </div>
                 </div>
 
-                <!-- Booking Form -->
                 <form id="booking-form" onsubmit="submitBooking(event)" class="bg-white rounded-lg border border-slate-200 p-4 space-y-4 shadow-sm">
                     <div class="border-b border-slate-200 pb-2">
                         <h3 class="font-bold text-xs uppercase tracking-wider text-rtafNavy">แบบฟอร์มบันทึกการจองบ้านพัก</h3>
@@ -346,7 +327,6 @@
                     </button>
                 </form>
 
-                <!-- Booking Confirmation Card -->
                 <div id="booking-confirmed-panel" class="hidden bg-emerald-50 border border-emerald-300 rounded-lg p-4 space-y-3 text-xs shadow-sm">
                     <div class="border-b border-emerald-200 pb-2">
                         <p class="font-bold text-emerald-900">บันทึกการจองเรียบร้อยแล้ว</p>
@@ -354,15 +334,13 @@
                     <div id="booking-summary-text" class="space-y-1 text-emerald-900 leading-relaxed"></div>
                     <div class="pt-1">
                         <button type="button" onclick="switchTab('food')" class="w-full py-2.5 px-3 gold-accent-btn font-bold rounded shadow-sm hover:opacity-95 transition">
-                            ดำเนินการต่อ: สั่งอาหารล่วงหน้า (ขั้นตอนที่ 4)
+                            ดำเนินการต่อ: สั่งอาหารล่วงหน้า (ขั้นตอนที่ 3)
                         </button>
                     </div>
                 </div>
             </section>
 
-            <!-- ========================================== -->
-            <!-- 4. STEP 3: FOOD ORDERING (สั่งอาหาร)         -->
-            <!-- ========================================== -->
+            <!-- 3. FOOD ORDERING -->
             <section id="tab-food" class="p-4 space-y-5 hidden bg-slate-50">
                 <div class="border-l-4 border-rtafGold bg-rtafNavy text-white p-4 rounded-r-lg shadow-sm">
                     <h2 class="font-bold text-sm text-rtafGoldLight">สั่งอาหารล่วงหน้า (แยกมื้อเช้า / มื้อเย็น)</h2>
@@ -399,7 +377,6 @@
                     </div>
                 </div>
 
-                <!-- 8 Categories Filter Bar -->
                 <div class="space-y-1.5">
                     <div class="flex items-center justify-between px-0.5">
                         <p class="text-[11px] font-bold text-slate-600">เลือกหมวดหมู่อาหาร</p>
@@ -418,10 +395,8 @@
                     </div>
                 </div>
 
-                <!-- Menu Items List -->
                 <div id="food-menu-container" class="space-y-4"></div>
 
-                <!-- Summary & Serve Time Details -->
                 <div class="bg-white rounded-lg border-2 border-rtafNavy p-4 space-y-4 shadow-sm">
                     <div class="border-b border-slate-200 pb-2 flex items-center justify-between">
                         <h3 class="font-bold text-xs uppercase tracking-wider text-rtafNavy">สรุปรายการอาหารที่สั่ง</h3>
@@ -470,7 +445,6 @@
                     </button>
                 </div>
 
-                <!-- Confirmation Modal -->
                 <div id="food-confirm-modal" class="hidden fixed inset-0 bg-slate-900/75 z-50 flex items-center justify-center p-4">
                     <div class="bg-white w-full max-w-sm rounded-lg border-2 border-rtafGold shadow-xl overflow-hidden">
                         <div class="bg-rtafNavy text-rtafGoldLight px-4 py-3 border-b border-rtafGold">
@@ -487,7 +461,6 @@
                     </div>
                 </div>
 
-                <!-- Success Card -->
                 <div id="line-dispatch-summary" class="hidden bg-emerald-50 border-2 border-emerald-300 rounded-lg p-4 space-y-3 shadow-sm">
                     <div class="border-b border-emerald-200 pb-2">
                         <p class="text-[11px] font-bold uppercase text-emerald-800">บันทึกสำเร็จ</p>
@@ -641,6 +614,7 @@
         let currentCalMonth = 10;
         let hostCalendarEmail = 'guidewhitehill8408@gmail.com';
 
+        // เชื่อมโยงสถานะห้องว่างเฉพาะจากปฏิทิน "ระบบจองบ้าน สร.ภม." เท่านั้น
         const defaultOccupiedRooms = {
             '2026-11-22': ['1101', '1102'],
             '2026-11-23': ['1101', '1102', '1103', '1104'],
@@ -649,24 +623,14 @@
         };
         let occupiedRoomsByDate = JSON.parse(localStorage.getItem('phumankhao_central_calendar')) || defaultOccupiedRooms;
         let calendarEventDetails = JSON.parse(localStorage.getItem('phumankhao_calendar_events')) || {
-            '2026-11-01': ['(จ่ายแล้ว)ร.ต.ชำนาญ ดีประเสริฐ'],
-            '2026-11-05': ['(จ่ายแล้ว)ร.ท.สิริวัฒน์ จันทร์แดงสังกัด คปอ.V4-7(4,000)'],
-            '2026-11-06': ['(จ่ายแล้ว)ร.อ.อภิชาติ V2,3(1,500)'],
-            '2026-11-07': ['พ.อ.อ.ศุภณัฐ ทัศนวิตรพันธ์ (จ่ายแล้ว)ร.อ.นุกูล บัวแก้วสังกัด'],
-            '2026-11-13': ['(จ่ายแล้ว 5 พ.ย.)น.อ.กิตติกรณ์ กรี์สพล ผอ.คปอ.สปอ.คปอ.ท่ี 8am ร.ทสมชาย เรียบร้อย อาคารเดิม 2 ห้อง วันที่ 13 14 2 คืน'],
-            '2026-11-15': ['คณะนักเรียน คปอ.(D2C2) อาคาร สร.กม.ทั้งหมด (จ่ายแล้ว 11 พ.ย.)จองในนาม'],
-            '2026-11-16': ['(จ่ายแล้ว 10 พ.ย.)ร.ท.จีระศักดิ์'],
-            '2026-11-18': ['(จ่ายแล้ว)ขรก.ศคปอ.ดม.V4-6(3,000 10 พ.ย.)'],
-            '2026-11-20': ['(จ่ายแล้ว 12 พ.ย.)น.ต.ยุทธน'],
-            '2026-11-21': ['น.ท.นฤอรรถ', 'พ.อ.อ.วรพล วรรณวี (จ่ายแล้ว 13 พ.ย.)ร.ต.กล้าณ'],
-            '2026-11-22': ['ทอดกฐินวัดหลวงพ่อกวย (8:30am น้องจ๊อบส์)'],
-            '2026-11-25': ['ห้อง 1103 (จองผ่านระบบกลาง)'],
-            '2026-11-27': ['พ.อ.อ.ทนุ พุกละออ ฝลอ.สร.กม.'],
-            '2026-11-28': ['น้องจ๊อบ ร.ท.บุญยง เขตจัตุรัส V2-7'],
-            '2026-12-01': ['จองในนาม ร.ท.ธิติ ภูภักดี V2'],
-            '2026-12-03': ['4:30pm เสี่ยแบงค์ ทอ.'],
-            '2026-12-04': ['ร.ท.ฐิติ ภูภักดี V2-3(2,000)'],
-            '2026-12-05': ['น.ท.นฤอรรถ ศรีพุ่มไก่ จำน: น.ต.เฉลิมฤทธิ์ V2-7']
+            '2026-11-01': ['(จ่ายแล้ว) ร.ต.ชำนาญ ดีประเสริฐ [ระบบจองบ้าน สร.ภม.]'],
+            '2026-11-06': ['(จ่ายแล้ว) ร.อ.อภิชาติ [ระบบจองบ้าน สร.ภม.]'],
+            '2026-11-15': ['คณะนักเรียน คปอ. [ระบบจองบ้าน สร.ภม.]'],
+            '2026-11-20': ['น.ต.ยุทธน [ระบบจองบ้าน สร.ภม.]'],
+            '2026-11-22': ['ทอดกฐินวัดหลวงพ่อกวย [ระบบจองบ้าน สร.ภม.]'],
+            '2026-11-25': ['ห้อง 1103 [ระบบจองบ้าน สร.ภม.]'],
+            '2026-12-01': ['ร.ท.ธิติ ภูภักดี [ระบบจองบ้าน สร.ภม.]'],
+            '2026-12-05': ['น.ท.นฤอรรถ ศรีพุ่มไก่ [ระบบจองบ้าน สร.ภม.]']
         };
 
         const thaiMonths = [
@@ -675,12 +639,6 @@
         ];
 
         window.onload = function () {
-            hostCalendarEmail = 'guidewhitehill8408@gmail.com';
-            localStorage.setItem('phumankhao_host_email', hostCalendarEmail);
-            
-            const linkEl = document.getElementById('host-calendar-public-link');
-            if (linkEl) linkEl.href = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(hostCalendarEmail)}`;
-
             const today = new Date(2026, 10, 18);
             const minDate = new Date(today);
             minDate.setDate(today.getDate() + 4);
@@ -771,7 +729,7 @@
             const availableRooms = allRooms.filter(r => !occupied.includes(r));
             const detailBox = document.getElementById('calendar-day-detail');
 
-            let eventInfo = events.length > 0 ? `<br><strong class="text-rtafNavy">รายการในปฏิทิน:</strong> ${events.join(', ')}` : '';
+            let eventInfo = events.length > 0 ? `<br><strong class="text-rtafNavy">รายการระบบจองบ้าน สร.ภม.:</strong> ${events.join(', ')}` : '';
             
             detailBox.innerHTML = `<span class="font-bold text-rtafNavy">วันที่ ${dateStr}:</span> ว่าง ${availableRooms.length} ห้อง (<span class="font-bold text-emerald-800">ห้อง ${availableRooms.join(', ')}</span>)${eventInfo}`;
             
@@ -861,7 +819,7 @@
                 <p><strong>ผู้แนะนำจอง:</strong> ${recommenderName}</p>
             `;
             document.getElementById('booking-confirmed-panel').classList.remove('hidden');
-            showToast('บันทึกการจองและอัปเดตปฏิทินกลางเรียบร้อยแล้ว');
+            showToast('บันทึกการจองและอัปเดตปฏิทินระบบจองบ้าน สร.ภม. เรียบร้อยแล้ว');
         }
 
         function updateMealSelection() {
