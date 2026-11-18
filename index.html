@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="w-full max-w-xs pt-2">
-                    <button type="button" onclick="enterApp()" class="w-full py-4 px-4 gold-accent-btn font-bold text-sm rounded-xl shadow-lg hover:opacity-95 transition tracking-wide uppercase">
+                    <button type="button" onclick="enterApp()" class="w-full py-4 px-4 gold-accent-btn font-bold text-sm rounded-xl shadow-lg hover:opacity-95 transition tracking-wide uppercase cursor-pointer">
                         เข้าสู่ระบบจองบ้านพัก
                     </button>
                 </div>
@@ -703,6 +703,7 @@
                     colorClass = 'bg-red-50 text-red-900 border-red-200 hover:bg-red-100';
                 }
 
+                // แสดงเฉพาะสถานะห้องว่าง (เช่น ว่าง 4, เต็ม) โดยไม่มีข้อความหรือชื่อผู้จองบนปฏิทิน
                 let badgeText = `ว่าง ${availableCount}`;
                 if (availableCount === 0) {
                     badgeText = 'เต็ม';
@@ -722,6 +723,7 @@
             const availableRooms = allRooms.filter(r => !occupied.includes(r));
             const detailBox = document.getElementById('calendar-day-detail');
 
+            // แสดงผลเฉพาะจำนวนห้องว่าง ซ่อนชื่อผู้จองทั้งหมดเพื่อความเป็นส่วนตัว
             detailBox.innerHTML = `<span class="font-bold text-rtafNavy">วันที่ ${dateStr}:</span> ว่าง ${availableRooms.length} ห้อง (<span class="font-bold text-emerald-800">ห้อง ${availableRooms.join(', ')}</span>)`;
             
             const checkinInput = document.getElementById('checkin-date');
@@ -1042,3 +1044,4 @@
     </script>
 </body>
 </html>
+```eof
