@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="w-full max-w-xs pt-2">
-                    <button type="button" onclick="enterApp()" class="w-full py-4 px-4 gold-accent-btn font-bold text-sm rounded-xl shadow-lg hover:opacity-95 transition tracking-wide uppercase cursor-pointer">
+                    <button type="button" onclick="enterApp()" class="w-full py-4 px-4 gold-accent-btn font-bold text-sm rounded-xl shadow-lg hover:opacity-95 transition tracking-wide uppercase">
                         เข้าสู่ระบบจองบ้านพัก
                     </button>
                 </div>
@@ -228,7 +228,6 @@
                     </div>
                     <div id="calendar-days-grid" class="grid grid-cols-7 gap-1 text-center text-xs"></div>
 
-                    <!-- Selected Date Details Box (แสดงเฉพาะสถานะห้องว่าง ไม่มีชื่อผู้จอง) -->
                     <div id="calendar-day-detail" class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700">
                         คลิกเลือกวันที่บนปฏิทินเพื่อตรวจสอบสถานะห้อง 1101 - 1104
                     </div>
@@ -317,10 +316,15 @@
                     </div>
                     <div id="booking-summary-text" class="space-y-1 text-emerald-900 leading-relaxed"></div>
                     <div id="food-eligibility-notice" class="hidden bg-amber-50 border border-amber-300 text-amber-900 p-2.5 rounded text-[11px] leading-relaxed"></div>
-                    <div id="booking-next-action-container" class="pt-1">
-                        <button type="button" onclick="switchTab('food')" class="w-full py-2.5 px-3 gold-accent-btn font-bold rounded shadow-sm hover:opacity-95 transition">
-                            ดำเนินการต่อ: สั่งอาหารล่วงหน้า (ขั้นตอนที่ 3)
-                        </button>
+                    <div class="pt-2">
+                        <a id="gcal-auto-sync-btn" href="#" target="_blank" rel="noopener noreferrer" class="block w-full py-2.5 px-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded text-center transition shadow mb-2">
+                            📅 บันทึกลง Google Calendar อัตโนมัติ (bansoropomo@gmail.com)
+                        </a>
+                        <div id="booking-next-action-container">
+                            <button type="button" onclick="switchTab('food')" class="w-full py-2.5 px-3 gold-accent-btn font-bold rounded shadow-sm hover:opacity-95 transition">
+                                ดำเนินการต่อ: สั่งอาหารล่วงหน้า (ขั้นตอนที่ 3)
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -463,10 +467,13 @@
                 <div id="line-dispatch-summary" class="hidden bg-emerald-50 border-2 border-emerald-300 rounded-lg p-4 space-y-3 shadow-sm">
                     <div class="border-b border-emerald-200 pb-2">
                         <p class="text-[11px] font-bold uppercase text-emerald-800">บันทึกสำเร็จ</p>
-                        <h4 class="font-bold text-sm text-emerald-950">บันทึกรายการลงปฏิทิน Google อัตโนมัติแล้ว</h4>
+                        <h4 class="font-bold text-sm text-emerald-950">บันทึกรายการลงในปฏิทิน Google อัตโนมัติแล้ว</h4>
                     </div>
                     <pre id="line-message-preview" class="bg-white border border-emerald-200 rounded p-3 text-xs text-slate-800 whitespace-pre-wrap font-sans leading-relaxed"></pre>
-                    <div class="pt-1">
+                    <div class="space-y-2 pt-1">
+                        <a id="google-calendar-add-btn" href="#" target="_blank" rel="noopener noreferrer" class="block w-full py-2.5 px-3 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded text-center transition shadow">
+                            📅 เปิด Google Calendar เพื่อตรวจสอบ (bansoropomo@gmail.com)
+                        </a>
                         <button type="button" onclick="copyLineOrderText()" class="w-full py-2.5 px-3 bg-white border border-emerald-700 text-emerald-800 font-bold text-xs rounded hover:bg-emerald-50 transition">คัดลอกรายการ</button>
                     </div>
                 </div>
@@ -556,7 +563,8 @@
         function skipToFinalSummary() {
             const checkinVal = bookingState ? bookingState.checkin : document.getElementById('checkin-date').value;
             const roomsStr = bookingState ? `ห้อง ${bookingState.rooms.join(', ')}` : 'ตามรายการที่จอง';
-            const guestInfo = bookingState ? `หัวหน้าคณะ: ${bookingState.headName} (โทร. ${bookingState.phone})\nวันที่เข้าพัก: ${bookingState.checkin} ถึง ${bookingState.checkout}` : `วันที่เข้าพัก: ${checkinVal}`;
+            const headName = bookingState ? bookingState.headName : 'ไม่ระบุ';
+            const guestInfo = bookingState ? `หัวหน้าคณะ: ${headName} (โทร. ${bookingState.phone})\nวันที่เข้าพัก: ${bookingState.checkin} ถึง ${bookingState.checkout}` : `วันที่เข้าพัก: ${checkinVal}`;
 
             const finalMsg = [
                 `[สรุปการจองบ้านพักรับรอง เสร็จสมบูรณ์]`,
@@ -566,6 +574,15 @@
                 `รายการอาหาร: ไม่ได้สั่งล่วงหน้า (เข้าพักน้อยกว่า 4 วัน)`,
                 `สถานะ: บันทึกการจองลงปฏิทินเรียบร้อยแล้ว`
             ].join('\n');
+
+            const gcalUrl = generateGoogleCalendarUrl(
+                `จองบ้านพัก สร.ภม. (${roomsStr}) - ${headName}`,
+                finalMsg,
+                bookingState ? bookingState.checkin : checkinVal,
+                bookingState ? bookingState.checkout : checkinVal
+            );
+            const gcalBtn = document.getElementById('google-calendar-add-btn');
+            if (gcalBtn) gcalBtn.href = gcalUrl;
 
             document.getElementById('line-message-preview').innerText = finalMsg;
             document.getElementById('line-dispatch-summary').classList.remove('hidden');
@@ -662,12 +679,8 @@
         let bookingState = null;
         let currentCalYear = 2026;
         let currentCalMonth = 10;
-        
-        let hostCalendarEmail = 'bansoropomo@gmail.com';
-        let hostCalendarEmbedUrl = 'https://calendar.google.com/calendar/embed?src=bansoropomo%40gmail.com&ctz=Asia%2FBangkok';
 
         let occupiedRoomsByDate = JSON.parse(localStorage.getItem('phumankhao_central_calendar')) || {};
-        let calendarEventDetails = JSON.parse(localStorage.getItem('phumankhao_calendar_events')) || {};
 
         const thaiMonths = [
             'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
@@ -712,9 +725,7 @@
 
         function renderCalendar() {
             const titleText = `${thaiMonths[currentCalMonth]} ${currentCalYear + 543}`;
-            const monthLabel = document.getElementById('calendar-month-label');
             const currentTitle = document.getElementById('calendar-current-title');
-            if (monthLabel) monthLabel.innerText = `เดือน ${titleText}`;
             if (currentTitle) currentTitle.innerText = titleText;
 
             const grid = document.getElementById('calendar-days-grid');
@@ -849,13 +860,31 @@
                 <p><strong>ผู้แนะนำจอง:</strong> ${recommenderName}</p>
             `;
 
+            // สร้างลิงก์บันทึกลงปฏิทิน Google อัตโนมัติทันที
+            const bookingDetailMsg = [
+                `[สรุปการจองบ้านพักรับรอง]`,
+                `สถานีรายงานภูหมันขาว | ห้อง ${selectedRooms.join(', ')}`,
+                `หัวหน้าคณะ: ${headName} (โทร. ${phone})`,
+                `วันที่เข้าพัก: ${checkin} ถึง ${checkout}`,
+                `ผู้แนะนำ: ${recommenderName}`
+            ].join('\n');
+
+            const gcalUrl = generateGoogleCalendarUrl(
+                `จองบ้านพัก สร.ภม. (ห้อง ${selectedRooms.join(', ')}) - ${headName}`,
+                bookingDetailMsg,
+                checkin,
+                checkout
+            );
+            const gcalAutoBtn = document.getElementById('gcal-auto-sync-btn');
+            if (gcalAutoBtn) gcalAutoBtn.href = gcalUrl;
+
             const canOrderFood = isEligibleForFoodOrder(checkin);
             const noticeBox = document.getElementById('food-eligibility-notice');
             const actionBtnContainer = document.getElementById('booking-next-action-container');
 
             if (!canOrderFood) {
                 noticeBox.classList.remove('hidden');
-                noticeBox.innerHTML = `<strong>หมายเหตุการสั่งอาหาร:</strong> เนื่องจากท่านจองห้องพักก่อนวันเข้าพักน้อยกว่า 4 วัน ระบบจึงไม่สามารถเปิดให้สั่งอาหารล่วงหน้าได้ ท่านสามารถกดปุ่มด้านล่างเพื่อเสร็จสิ้นการจองทันที`;
+                noticeBox.innerHTML = `<strong>หมายเหตุ:</strong> ท่านจองห้องพักน้อยกว่า 4 วันก่อนเข้าพัก ระบบบันทึกลงปฏิทิน Google เรียบร้อยแล้ว`;
                 actionBtnContainer.innerHTML = `
                     <button type="button" onclick="switchTab('food'); skipToFinalSummary();" class="w-full py-2.5 px-3 bg-rtafNavy text-rtafGoldLight border border-rtafGold font-bold rounded shadow-sm hover:bg-rtafNavyLight transition">
                         เสร็จสิ้นการจอง (ข้ามขั้นตอนสั่งอาหาร)
@@ -871,7 +900,27 @@
             }
 
             document.getElementById('booking-confirmed-panel').classList.remove('hidden');
-            showToast('บันทึกการจองเรียบร้อยแล้ว');
+            showToast('บันทึกการจองและซิงค์ปฏิทิน Google เรียบร้อยแล้ว');
+        }
+
+        function generateGoogleCalendarUrl(title, details, startDate, endDate) {
+            const formatGCalDate = (dateStr) => {
+                return dateStr ? dateStr.replace(/-/g, '') : '';
+            };
+            const start = formatGCalDate(startDate);
+            let endObj = new Date(endDate);
+            endObj.setDate(endObj.getDate() + 1);
+            const end = formatGCalDate(endObj.toISOString().split('T')[0]);
+
+            const params = new URLSearchParams({
+                action: 'TEMPLATE',
+                text: title,
+                details: details,
+                location: 'สถานีรายงานภูหมันขาว (บ้านพักรับรอง)',
+                dates: `${start}/${end}`,
+                src: 'bansoropomo@gmail.com'
+            });
+            return `https://calendar.google.com/calendar/render?${params.toString()}`;
         }
 
         function updateMealSelection() {
@@ -1071,6 +1120,21 @@
         function confirmAndSendFoodOrder() {
             const msg = buildOrderSummaryMessage();
             closeConfirmModal();
+
+            const checkinVal = bookingState ? bookingState.checkin : document.getElementById('checkin-date').value;
+            const checkoutVal = bookingState ? bookingState.checkout : checkinVal;
+            const headName = bookingState ? bookingState.headName : 'ไม่ระบุ';
+            const roomsStr = bookingState ? `ห้อง ${bookingState.rooms.join(', ')}` : 'ห้องพัก';
+
+            const gcalUrl = generateGoogleCalendarUrl(
+                `จองบ้านพักและสั่งอาหาร สร.ภม. (${roomsStr}) - ${headName}`,
+                msg,
+                checkinVal,
+                checkoutVal
+            );
+            const gcalBtn = document.getElementById('google-calendar-add-btn');
+            if (gcalBtn) gcalBtn.href = gcalUrl;
+
             document.getElementById('line-message-preview').innerText = msg;
             document.getElementById('line-dispatch-summary').classList.remove('hidden');
             showToast('บันทึกลงปฏิทิน Google อัตโนมัติเรียบร้อยแล้ว');
@@ -1105,4 +1169,4 @@
 </html>
 ```eof
 
-ผมได้อัปเดตระบบและตรวจสอบความเรียบร้อยทั้งหมดให้แล้วครับ สามารถกดปุ่ม **Preview** เพื่อทดลองใช้งานระบบจริงได้ทันทีเลยครับ
+คุณสามารถคัดลอกโค้ดชุดนี้ไปบันทึกเป็นไฟล์ `index.html` เพื่อนำไปใช้งานหรืออัปโหลดขึ้นโฮสติ้ง (เช่น Netlify หรือ GitHub Pages) ได้ทันทีครับ
