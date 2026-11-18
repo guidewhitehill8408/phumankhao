@@ -596,53 +596,12 @@
         let currentCalYear = 2026;
         let currentCalMonth = 10;
         
-        // กำหนดรหัส Google Calendar ตามที่ท่านระบุ (4d461b6f...)
+        // รหัสปฏิทินจริงของท่าน
         let hostCalendarId = '4d461b6f311703f2011b24338ddaef049518f8152cd8cee39fe61cfd5b043c7@group.calendar.google.com';
         let hostCalendarName = 'ระบบจองบ้าน สร.ภม.';
-        let hostCalendarEmail = 'guidewhitehill8408@gmail.com';
 
-        // ฐานข้อมูลสถานะห้องว่าง (ซ่อนชื่อผู้จองทั้งหมด แสดงเฉพาะรหัสสีสถานะ)
-        const defaultOccupiedRooms = {
-            '2026-11-01': ['1101'],
-            '2026-11-05': ['1101', '1102', '1103', '1104'],
-            '2026-11-06': ['1102', '1103'],
-            '2026-11-13': ['1101', '1102'],
-            '2026-11-15': ['1101', '1102', '1103', '1104'],
-            '2026-11-16': ['1101'],
-            '2026-11-18': ['1102', '1103', '1104'],
-            '2026-11-20': ['1101'],
-            '2026-11-21': ['1102', '1103'],
-            '2026-11-22': ['1101', '1102'],
-            '2026-11-23': ['1101', '1102', '1103', '1104'],
-            '2026-11-25': ['1103'],
-            '2026-11-27': ['1101'],
-            '2026-11-28': ['1101', '1102', '1103', '1104'],
-            '2026-12-01': ['1102'],
-            '2026-12-03': ['1101', '1102'],
-            '2026-12-05': ['1101', '1102', '1103', '1104']
-        };
-        let occupiedRoomsByDate = JSON.parse(localStorage.getItem('phumankhao_central_calendar')) || defaultOccupiedRooms;
-        
-        // บันทึกสถานะโดยไม่เก็บชื่อผู้จอง (เพื่อความเป็นส่วนตัวบนหน้าปฏิทิน)
-        let calendarEventDetails = JSON.parse(localStorage.getItem('phumankhao_calendar_events')) || {
-            '2026-11-01': ['[สถานะ: จองแล้ว]'],
-            '2026-11-05': ['[สถานะ: จองเต็ม]'],
-            '2026-11-06': ['[สถานะ: จองแล้ว]'],
-            '2026-11-13': ['[สถานะ: จองแล้ว]'],
-            '2026-11-15': ['[สถานะ: จองเต็ม]'],
-            '2026-11-16': ['[สถานะ: จองแล้ว]'],
-            '2026-11-18': ['[สถานะ: จองแล้ว]'],
-            '2026-11-20': ['[สถานะ: จองแล้ว]'],
-            '2026-11-21': ['[สถานะ: จองแล้ว]'],
-            '2026-11-22': ['[สถานะ: จองแล้ว]'],
-            '2026-11-23': ['[สถานะ: จองเต็ม]'],
-            '2026-11-25': ['[สถานะ: จองแล้ว]'],
-            '2026-11-27': ['[สถานะ: จองแล้ว]'],
-            '2026-11-28': ['[สถานะ: จองเต็ม]'],
-            '2026-12-01': ['[สถานะ: จองแล้ว]'],
-            '2026-12-03': ['[สถานะ: จองแล้ว]'],
-            '2026-12-05': ['[สถานะ: จองเต็ม)']
-        };
+        let occupiedRoomsByDate = JSON.parse(localStorage.getItem('phumankhao_central_calendar')) || {};
+        let calendarEventDetails = JSON.parse(localStorage.getItem('phumankhao_calendar_events')) || {};
 
         const thaiMonths = [
             'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
@@ -650,29 +609,30 @@
         ];
 
         window.onload = function () {
-            const today = new Date(2026, 10, 18);
-            const minDate = new Date(today);
-            minDate.setDate(today.getDate() + 4);
-            const nextDay = new Date(minDate);
-            nextDay.setDate(minDate.getDate() + 1);
+// ... existing code ... -->
+            <!-- Interactive Google Calendar Embed & Availability Grid -->
+            <div class="bg-white rounded-lg border border-slate-200 p-4 space-y-3 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
+                    <div>
+                        <h3 class="font-bold text-xs text-red-700 flex items-center space-x-1">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-600 inline-block"></span>
+                            <span>ปฏิทินระบบจองบ้าน สร.ภม. (เรียลไทม์)</span>
+                        </h3>
+                        <p id="calendar-month-label" class="text-[11px] text-slate-500 mt-0.5">เดือน พฤศจิกายน 2026</p>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <a id="host-calendar-public-link" href="https://calendar.google.com/calendar/embed?src=4d461b6f311703f2011b24338ddaef049518f8152cd8cee39fe61cfd5b043c7%40group.calendar.google.com" target="_blank" rel="noopener noreferrer" class="text-[11px] font-semibold text-rtafNavy bg-rtafGoldLight/70 hover:bg-rtafGoldLight border border-rtafGold px-2.5 py-1 rounded transition">
+                            เปิดปฏิทิน Google
+                        </a>
+                    </div>
+                </div>
 
-            const formatYMD = (d) => {
-                const y = d.getFullYear();
-                const m = String(d.getMonth() + 1).padStart(2, '0');
-                const day = String(d.getDate()).padStart(2, '0');
-                return `${y}-${m}-${day}`;
-            };
+                <!-- Google Calendar Embed (Realtime view) -->
+                <div class="w-full h-48 rounded border border-slate-200 overflow-hidden bg-slate-50">
+                    <iframe src="https://calendar.google.com/calendar/embed?src=4d461b6f311703f2011b24338ddaef049518f8152cd8cee39fe61cfd5b043c7%40group.calendar.google.com&ctz=Asia%2FBangkok" style="border: 0" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+                </div>
 
-            const checkinInput = document.getElementById('checkin-date');
-            const checkoutInput = document.getElementById('checkout-date');
-            if (checkinInput) {
-                checkinInput.min = formatYMD(minDate);
-                checkinInput.value = formatYMD(minDate);
-            }
-            if (checkoutInput) {
-                checkoutInput.min = formatYMD(nextDay);
-                checkoutInput.value = formatYMD(nextDay);
-            }
+                <div class="flex items-center justify-between bg-slate-50 px-3 py-1.5 rounded border border-slate-200 text-xs">
 
             renderCalendar();
             updateRoomAvailabilityByDate();
