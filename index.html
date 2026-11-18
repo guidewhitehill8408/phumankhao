@@ -230,40 +230,10 @@
                             <p id="calendar-month-label" class="text-[11px] text-slate-500 mt-0.5">เดือน พฤศจิกายน 2026</p>
                         </div>
                         <div class="flex items-center space-x-1.5">
-                            <button type="button" onclick="toggleHostCalendarConfig()" class="text-[11px] font-semibold text-rtafNavy bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 py-1 rounded transition">
-                                ตั้งค่าปฏิทินกลาง
-                            </button>
-                            <a id="host-calendar-public-link" href="https://calendar.google.com/calendar/r" target="_blank" rel="noopener noreferrer" class="text-[11px] font-semibold text-rtafNavy bg-rtafGoldLight/70 hover:bg-rtafGoldLight border border-rtafGold px-2.5 py-1 rounded transition">
+                            <a id="host-calendar-public-link" href="https://calendar.google.com/calendar/embed?src=guidewhitehill8408%40gmail.com" target="_blank" rel="noopener noreferrer" class="text-[11px] font-semibold text-rtafNavy bg-rtafGoldLight/70 hover:bg-rtafGoldLight border border-rtafGold px-2.5 py-1 rounded transition">
                                 เปิดปฏิทินบ้านพัก
                             </a>
                         </div>
-                    </div>
-
-                    <!-- Host Central Google Calendar Configuration Panel -->
-                    <div id="host-calendar-config-panel" class="hidden bg-slate-50 border border-rtafGold/60 rounded p-3 space-y-2.5 text-xs">
-                        <div class="border-b border-slate-200 pb-1.5">
-                            <p class="font-bold text-rtafNavy">การเชื่อมต่อปฏิทินหลักของบ้านพักรับรอง (Gmail ส่วนกลาง)</p>
-                            <p class="text-[11px] text-slate-600 mt-0.5">ใช้บัญชี Gmail กลางของบ้านพักเป็นศูนย์กลาง เพื่อให้ผู้เข้าพักทุกคนตรวจสอบสถานะห้องว่างและลงทะเบียนจองด้วยตนเอง</p>
-                        </div>
-                        <div class="space-y-1">
-                            <label class="block font-semibold text-slate-700 text-[11px]">อีเมลปฏิทินกลางของบ้านพัก (Calendar ID)</label>
-                            <input type="email" id="host-calendar-email" value="phumankhao.rtaf.guesthouse@gmail.com" class="w-full p-2 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:border-rtafNavy">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="block font-semibold text-slate-700 text-[11px]">ลิงก์ปฏิทินสาธารณะ (Public Google Calendar URL)</label>
-                            <input type="url" id="host-calendar-url" placeholder="วางลิงก์ปฏิทินสาธารณะของบ้านพัก (ถ้ามี)" class="w-full p-2 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:border-rtafNavy">
-                        </div>
-                        <div class="flex justify-end">
-                            <button type="button" onclick="saveHostCalendarConfig()" class="py-1.5 px-3 bg-rtafNavy text-rtafGoldLight font-bold text-[11px] rounded hover:bg-rtafNavyLight transition">
-                                บันทึกการตั้งค่าปฏิทินกลาง
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Active Central Calendar Indicator -->
-                    <div class="bg-rtafNavy/5 border border-rtafNavy/15 rounded px-2.5 py-1.5 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-600">ปฏิทินหลัก: <strong id="active-host-email-display" class="text-rtafNavy">phumankhao.rtaf.guesthouse@gmail.com</strong></span>
-                        <span class="text-emerald-700 font-bold">เปิดให้ผู้เข้าพักลงทะเบียนเองได้</span>
                     </div>
 
                     <!-- Month Switcher -->
@@ -540,7 +510,6 @@
     </div>
 
     <script>
-        // Define core functions at the very top of script execution context
         function enterApp() {
             const cover = document.getElementById('tab-cover');
             const header = document.getElementById('app-header');
@@ -579,6 +548,21 @@
             }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleAgreeButton() {
+            const isChecked = document.getElementById('agree-checkbox').checked;
+            const btn = document.getElementById('btn-to-booking');
+            if (!btn) return;
+            if (isChecked) {
+                btn.disabled = false;
+                btn.classList.remove('bg-slate-300', 'text-slate-500', 'cursor-not-allowed');
+                btn.classList.add('bg-rtafNavy', 'text-rtafGoldLight', 'border', 'border-rtafGold', 'hover:bg-rtafNavyLight');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('bg-slate-300', 'text-slate-500', 'cursor-not-allowed');
+                btn.classList.remove('bg-rtafNavy', 'text-rtafGoldLight', 'border', 'border-rtafGold', 'hover:bg-rtafNavyLight');
+            }
         }
 
         const menuItems = [
@@ -656,7 +640,6 @@
         let currentCalYear = 2026;
         let currentCalMonth = 10;
         let hostCalendarEmail = 'guidewhitehill8408@gmail.com';
-        let hostCalendarPublicUrl = '';
 
         const defaultOccupiedRooms = {
             '2026-11-22': ['1101', '1102'],
@@ -665,6 +648,26 @@
             '2026-11-28': ['1101', '1102', '1103', '1104']
         };
         let occupiedRoomsByDate = JSON.parse(localStorage.getItem('phumankhao_central_calendar')) || defaultOccupiedRooms;
+        let calendarEventDetails = JSON.parse(localStorage.getItem('phumankhao_calendar_events')) || {
+            '2026-11-01': ['(จ่ายแล้ว)ร.ต.ชำนาญ ดีประเสริฐ'],
+            '2026-11-05': ['(จ่ายแล้ว)ร.ท.สิริวัฒน์ จันทร์แดงสังกัด คปอ.V4-7(4,000)'],
+            '2026-11-06': ['(จ่ายแล้ว)ร.อ.อภิชาติ V2,3(1,500)'],
+            '2026-11-07': ['พ.อ.อ.ศุภณัฐ ทัศนวิตรพันธ์ (จ่ายแล้ว)ร.อ.นุกูล บัวแก้วสังกัด'],
+            '2026-11-13': ['(จ่ายแล้ว 5 พ.ย.)น.อ.กิตติกรณ์ กรี์สพล ผอ.คปอ.สปอ.คปอ.ท่ี 8am ร.ทสมชาย เรียบร้อย อาคารเดิม 2 ห้อง วันที่ 13 14 2 คืน'],
+            '2026-11-15': ['คณะนักเรียน คปอ.(D2C2) อาคาร สร.กม.ทั้งหมด (จ่ายแล้ว 11 พ.ย.)จองในนาม'],
+            '2026-11-16': ['(จ่ายแล้ว 10 พ.ย.)ร.ท.จีระศักดิ์'],
+            '2026-11-18': ['(จ่ายแล้ว)ขรก.ศคปอ.ดม.V4-6(3,000 10 พ.ย.)'],
+            '2026-11-20': ['(จ่ายแล้ว 12 พ.ย.)น.ต.ยุทธน'],
+            '2026-11-21': ['น.ท.นฤอรรถ', 'พ.อ.อ.วรพล วรรณวี (จ่ายแล้ว 13 พ.ย.)ร.ต.กล้าณ'],
+            '2026-11-22': ['ทอดกฐินวัดหลวงพ่อกวย (8:30am น้องจ๊อบส์)'],
+            '2026-11-25': ['ห้อง 1103 (จองผ่านระบบกลาง)'],
+            '2026-11-27': ['พ.อ.อ.ทนุ พุกละออ ฝลอ.สร.กม.'],
+            '2026-11-28': ['น้องจ๊อบ ร.ท.บุญยง เขตจัตุรัส V2-7'],
+            '2026-12-01': ['จองในนาม ร.ท.ธิติ ภูภักดี V2'],
+            '2026-12-03': ['4:30pm เสี่ยแบงค์ ทอ.'],
+            '2026-12-04': ['ร.ท.ฐิติ ภูภักดี V2-3(2,000)'],
+            '2026-12-05': ['น.ท.นฤอรรถ ศรีพุ่มไก่ จำน: น.ต.เฉลิมฤทธิ์ V2-7']
+        };
 
         const thaiMonths = [
             'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
@@ -672,23 +675,11 @@
         ];
 
         window.onload = function () {
-            const savedEmail = localStorage.getItem('phumankhao_host_email');
-            const savedUrl = localStorage.getItem('phumankhao_host_url');
-            if (savedEmail) {
-                hostCalendarEmail = savedEmail;
-                document.getElementById('host-calendar-email').value = savedEmail;
-                document.getElementById('active-host-email-display').innerText = savedEmail;
-            } else {
-                document.getElementById('host-calendar-email').value = hostCalendarEmail;
-                document.getElementById('active-host-email-display').innerText = hostCalendarEmail;
-            }
-            if (savedUrl) {
-                hostCalendarPublicUrl = savedUrl;
-                document.getElementById('host-calendar-url').value = savedUrl;
-                document.getElementById('host-calendar-public-link').href = savedUrl;
-            } else {
-                document.getElementById('host-calendar-public-link').href = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(hostCalendarEmail)}`;
-            }
+            hostCalendarEmail = 'guidewhitehill8408@gmail.com';
+            localStorage.setItem('phumankhao_host_email', hostCalendarEmail);
+            
+            const linkEl = document.getElementById('host-calendar-public-link');
+            if (linkEl) linkEl.href = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(hostCalendarEmail)}`;
 
             const today = new Date(2026, 10, 18);
             const minDate = new Date(today);
@@ -705,84 +696,20 @@
 
             const checkinInput = document.getElementById('checkin-date');
             const checkoutInput = document.getElementById('checkout-date');
-            checkinInput.min = formatYMD(minDate);
-            checkinInput.value = formatYMD(minDate);
-            checkoutInput.min = formatYMD(nextDay);
-            checkoutInput.value = formatYMD(nextDay);
+            if (checkinInput) {
+                checkinInput.min = formatYMD(minDate);
+                checkinInput.value = formatYMD(minDate);
+            }
+            if (checkoutInput) {
+                checkoutInput.min = formatYMD(nextDay);
+                checkoutInput.value = formatYMD(nextDay);
+            }
 
             renderCalendar();
             updateRoomAvailabilityByDate();
             renderFoodMenu('all');
             updateCartSummary();
         };
-
-        function enterApp() {
-            document.getElementById('tab-cover').classList.add('hidden');
-            document.getElementById('app-header').classList.remove('hidden');
-            document.getElementById('app-nav').classList.remove('hidden');
-            switchTab('regulations');
-        }
-
-        function switchTab(tabName) {
-            if ((tabName === 'booking' || tabName === 'food') && !document.getElementById('agree-checkbox').checked) {
-                showToast('กรุณากดรับทราบระเบียบข้อบังคับก่อนดำเนินการต่อ');
-                return;
-            }
-
-            ['regulations', 'booking', 'food'].forEach(t => {
-                const el = document.getElementById(`tab-${t}`);
-                if (el) el.classList.add('hidden');
-                const btn = document.getElementById(`nav-btn-${t}`);
-                if (btn) {
-                    btn.classList.remove('border-rtafGold', 'text-rtafGoldLight', 'bg-rtafNavy', 'font-bold');
-                    btn.classList.add('border-transparent', 'text-slate-300', 'font-medium');
-                }
-            });
-
-            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-            const activeBtn = document.getElementById(`nav-btn-${tabName}`);
-            if (activeBtn) {
-                activeBtn.classList.remove('border-transparent', 'text-slate-300', 'font-medium');
-                activeBtn.classList.add('border-rtafGold', 'text-rtafGoldLight', 'bg-rtafNavy', 'font-bold');
-            }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function toggleAgreeButton() {
-            const isChecked = document.getElementById('agree-checkbox').checked;
-            const btn = document.getElementById('btn-to-booking');
-            if (isChecked) {
-                btn.disabled = false;
-                btn.classList.remove('bg-slate-300', 'text-slate-500', 'cursor-not-allowed');
-                btn.classList.add('bg-rtafNavy', 'text-rtafGoldLight', 'border', 'border-rtafGold', 'hover:bg-rtafNavyLight');
-            } else {
-                btn.disabled = true;
-                btn.classList.add('bg-slate-300', 'text-slate-500', 'cursor-not-allowed');
-                btn.classList.remove('bg-rtafNavy', 'text-rtafGoldLight', 'border', 'border-rtafGold', 'hover:bg-rtafNavyLight');
-            }
-        }
-
-        function toggleHostCalendarConfig() {
-            document.getElementById('host-calendar-config-panel').classList.toggle('hidden');
-        }
-
-        function saveHostCalendarConfig() {
-            const emailInput = document.getElementById('host-calendar-email').value.trim();
-            const urlInput = document.getElementById('host-calendar-url').value.trim();
-            if (!emailInput) {
-                showToast('กรุณาระบุอีเมลปฏิทินกลางของบ้านพัก');
-                return;
-            }
-            hostCalendarEmail = emailInput;
-            hostCalendarPublicUrl = urlInput;
-            localStorage.setItem('phumankhao_host_email', hostCalendarEmail);
-            localStorage.setItem('phumankhao_host_url', hostCalendarPublicUrl);
-            document.getElementById('active-host-email-display').innerText = hostCalendarEmail;
-            document.getElementById('host-calendar-public-link').href = hostCalendarPublicUrl ? hostCalendarPublicUrl : `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(hostCalendarEmail)}`;
-            document.getElementById('host-calendar-config-panel').classList.add('hidden');
-            showToast('บันทึกปฏิทินกลางเรียบร้อยแล้ว');
-        }
 
         function changeCalendarMonth(delta) {
             currentCalMonth += delta;
@@ -793,10 +720,13 @@
 
         function renderCalendar() {
             const titleText = `${thaiMonths[currentCalMonth]} ${currentCalYear + 543}`;
-            document.getElementById('calendar-month-label').innerText = `เดือน ${titleText}`;
-            document.getElementById('calendar-current-title').innerText = titleText;
+            const monthLabel = document.getElementById('calendar-month-label');
+            const currentTitle = document.getElementById('calendar-current-title');
+            if (monthLabel) monthLabel.innerText = `เดือน ${titleText}`;
+            if (currentTitle) currentTitle.innerText = titleText;
 
             const grid = document.getElementById('calendar-days-grid');
+            if (!grid) return;
             grid.innerHTML = '';
 
             const firstDay = new Date(currentCalYear, currentCalMonth, 1).getDay();
@@ -810,52 +740,62 @@
 
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateStr = `${currentCalYear}-${String(currentCalMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const events = calendarEventDetails[dateStr] || [];
                 const occupied = occupiedRoomsByDate[dateStr] || [];
-                const availableCount = 4 - occupied.length;
+                const availableCount = Math.max(0, 4 - occupied.length);
 
                 let colorClass = 'bg-emerald-50 text-emerald-900 border-emerald-200 hover:bg-emerald-100';
-                if (availableCount === 0) {
-                    colorClass = 'bg-red-50 text-red-900 border-red-200 hover:bg-red-100';
-                } else if (availableCount < 4) {
+                if (events.length > 0 || availableCount < 4) {
                     colorClass = 'bg-amber-50 text-amber-900 border-amber-200 hover:bg-amber-100';
+                }
+                if (availableCount === 0 || events.length > 1) {
+                    colorClass = 'bg-red-50 text-red-900 border-red-200 hover:bg-red-100';
+                }
+
+                let badgeText = `ว่าง ${availableCount}`;
+                if (events.length > 0) {
+                    badgeText = `<span class="truncate max-w-[55px] block text-[8px] bg-white/90 px-1 rounded text-rtafNavy font-bold">${events[0]}</span>`;
                 }
 
                 const dayBtn = document.createElement('button');
                 dayBtn.type = 'button';
-                dayBtn.className = `py-1.5 rounded border font-semibold transition flex flex-col items-center justify-center ${colorClass}`;
-                dayBtn.innerHTML = `<span>${day}</span><span class="text-[9px] font-normal">${availableCount === 0 ? 'เต็ม' : `ว่าง ${availableCount}`}</span>`;
-                dayBtn.onclick = () => selectCalendarDate(dateStr, occupied);
+                dayBtn.className = `py-1.5 px-0.5 rounded border font-semibold transition flex flex-col items-center justify-center ${colorClass}`;
+                dayBtn.innerHTML = `<span>${day}</span><span class="text-[9px] font-normal mt-0.5">${badgeText}</span>`;
+                dayBtn.onclick = () => selectCalendarDate(dateStr, occupied, events);
                 grid.appendChild(dayBtn);
             }
         }
 
-        function selectCalendarDate(dateStr, occupied) {
+        function selectCalendarDate(dateStr, occupied, events) {
             const allRooms = ['1101', '1102', '1103', '1104'];
             const availableRooms = allRooms.filter(r => !occupied.includes(r));
             const detailBox = document.getElementById('calendar-day-detail');
 
-            if (availableRooms.length === 0) {
-                detailBox.innerHTML = `<span class="font-bold text-red-800">วันที่ ${dateStr}:</span> ห้องพักเต็มทุกห้อง กรุณาเลือกวันอื่น`;
-            } else {
-                detailBox.innerHTML = `<span class="font-bold text-rtafNavy">วันที่ ${dateStr}:</span> ว่าง ${availableRooms.length} ห้อง (<span class="font-bold text-emerald-800">ห้อง ${availableRooms.join(', ')}</span>)`;
-                const checkinInput = document.getElementById('checkin-date');
-                if (dateStr >= checkinInput.min) {
-                    checkinInput.value = dateStr;
-                    const nextDay = new Date(dateStr);
-                    nextDay.setDate(nextDay.getDate() + 1);
-                    document.getElementById('checkout-date').value = nextDay.toISOString().split('T')[0];
-                    updateRoomAvailabilityByDate();
-                }
+            let eventInfo = events.length > 0 ? `<br><strong class="text-rtafNavy">รายการในปฏิทิน:</strong> ${events.join(', ')}` : '';
+            
+            detailBox.innerHTML = `<span class="font-bold text-rtafNavy">วันที่ ${dateStr}:</span> ว่าง ${availableRooms.length} ห้อง (<span class="font-bold text-emerald-800">ห้อง ${availableRooms.join(', ')}</span>)${eventInfo}`;
+            
+            const checkinInput = document.getElementById('checkin-date');
+            if (checkinInput && dateStr >= checkinInput.min) {
+                checkinInput.value = dateStr;
+                const nextDay = new Date(dateStr);
+                nextDay.setDate(nextDay.getDate() + 1);
+                const checkoutInput = document.getElementById('checkout-date');
+                if (checkoutInput) checkoutInput.value = nextDay.toISOString().split('T')[0];
+                updateRoomAvailabilityByDate();
             }
         }
 
         function updateRoomAvailabilityByDate() {
-            const selectedDate = document.getElementById('checkin-date').value;
+            const checkinInput = document.getElementById('checkin-date');
+            if (!checkinInput) return;
+            const selectedDate = checkinInput.value;
             const occupied = occupiedRoomsByDate[selectedDate] || [];
             ['1101', '1102', '1103', '1104'].forEach(room => {
                 const isOccupied = occupied.includes(room);
                 const label = document.getElementById(`label-room-${room}`);
                 const statusSpan = document.getElementById(`status-${room}`);
+                if (!label || !statusSpan) return;
                 const checkbox = label.querySelector('input[type="checkbox"]');
 
                 if (isOccupied) {
@@ -903,13 +843,15 @@
             updateRoomAvailabilityByDate();
 
             const foodRoomSelect = document.getElementById('food-room-select');
-            foodRoomSelect.innerHTML = '';
-            selectedRooms.forEach(r => {
-                const opt = document.createElement('option');
-                opt.value = `ห้อง ${r}`;
-                opt.innerText = `ห้อง ${r}`;
-                foodRoomSelect.appendChild(opt);
-            });
+            if (foodRoomSelect) {
+                foodRoomSelect.innerHTML = '';
+                selectedRooms.forEach(r => {
+                    const opt = document.createElement('option');
+                    opt.value = `ห้อง ${r}`;
+                    opt.innerText = `ห้อง ${r}`;
+                    foodRoomSelect.appendChild(opt);
+                });
+            }
 
             document.getElementById('booking-summary-text').innerHTML = `
                 <p><strong>ห้องที่จอง:</strong> ห้อง ${selectedRooms.join(', ')}</p>
@@ -923,8 +865,10 @@
         }
 
         function updateMealSelection() {
-            currentMeal = document.querySelector('input[name="meal-type"]:checked').value;
-            document.getElementById('active-meal-indicator').innerText = currentMeal === 'breakfast' ? 'กำลังเลือกเมนู: อาหารเช้า' : 'กำลังเลือกเมนู: อาหารเย็น';
+            const checkedRadio = document.querySelector('input[name="meal-type"]:checked');
+            if (checkedRadio) currentMeal = checkedRadio.value;
+            const indicator = document.getElementById('active-meal-indicator');
+            if (indicator) indicator.innerText = currentMeal === 'breakfast' ? 'กำลังเลือกเมนู: อาหารเช้า' : 'กำลังเลือกเมนู: อาหารเย็น';
             renderFoodMenu(currentCategoryFilter);
         }
 
@@ -954,7 +898,7 @@
                 if (itemsInCat.length === 0) return;
 
                 const catBlock = document.createElement('div');
-                catBlock.className = 'bg-white rounded-lg border border-slate-200 p-4 space-y-3 shadow-sm';
+                catBlock.className = 'bg-white rounded-lg border border-slate-200 p-3.5 space-y-2.5 shadow-sm';
                 catBlock.innerHTML = `<div class="border-b border-slate-200 pb-1.5"><h4 class="font-bold text-xs uppercase tracking-wider text-rtafNavy">ประเภท${cat}</h4></div>`;
 
                 const listDiv = document.createElement('div');
@@ -965,7 +909,7 @@
                     const dQty = cart.dinner[item.id] || 0;
 
                     const row = document.createElement('div');
-                    row.className = 'py-2.5 flex items-center justify-between text-xs';
+                    row.className = 'py-2 flex items-center justify-between text-xs';
                     row.innerHTML = `
                         <div>
                             <p class="font-semibold text-slate-800">${item.name}</p>
@@ -998,57 +942,72 @@
             const bIds = Object.keys(cart.breakfast);
             const dIds = Object.keys(cart.dinner);
 
-            document.getElementById('badge-breakfast-count').innerText = bIds.reduce((sum, id) => sum + cart.breakfast[id], 0);
-            document.getElementById('badge-dinner-count').innerText = dIds.reduce((sum, id) => sum + cart.dinner[id], 0);
+            const bCountEl = document.getElementById('badge-breakfast-count');
+            const dCountEl = document.getElementById('badge-dinner-count');
+            if (bCountEl) bCountEl.innerText = bIds.reduce((sum, id) => sum + cart.breakfast[id], 0);
+            if (dCountEl) dCountEl.innerText = dIds.reduce((sum, id) => sum + cart.dinner[id], 0);
 
             const bListEl = document.getElementById('cart-breakfast-list');
             const dListEl = document.getElementById('cart-dinner-list');
 
             let bSubtotal = 0;
-            if (bIds.length === 0) {
-                bListEl.innerHTML = '<p class="text-slate-400 py-2 text-center">ยังไม่มีรายการอาหารเช้า</p>';
-            } else {
-                bListEl.innerHTML = '';
-                bIds.forEach(id => {
-                    const item = menuItems.find(m => m.id === id);
-                    const qty = cart.breakfast[id];
-                    const sub = item.price * qty;
-                    bSubtotal += sub;
-                    const div = document.createElement('div');
-                    div.className = 'py-1.5 flex items-center justify-between';
-                    div.innerHTML = `<span class="text-slate-700">${item.name} x ${qty}</span><span class="font-bold text-rtafNavy">${sub.toLocaleString()} บาท</span>`;
-                    bListEl.appendChild(div);
-                });
+            if (bListEl) {
+                if (bIds.length === 0) {
+                    bListEl.innerHTML = '<p class="text-slate-400 py-2 text-center">ยังไม่มีรายการอาหารเช้า</p>';
+                } else {
+                    bListEl.innerHTML = '';
+                    bIds.forEach(id => {
+                        const item = menuItems.find(m => m.id === id);
+                        const qty = cart.breakfast[id];
+                        const sub = item.price * qty;
+                        bSubtotal += sub;
+                        const div = document.createElement('div');
+                        div.className = 'py-1.5 flex items-center justify-between';
+                        div.innerHTML = `<span class="text-slate-700">${item.name} x ${qty}</span><span class="font-bold text-rtafNavy">${sub.toLocaleString()} บาท</span>`;
+                        bListEl.appendChild(div);
+                    });
+                }
             }
 
             let dSubtotal = 0;
-            if (dIds.length === 0) {
-                dListEl.innerHTML = '<p class="text-slate-400 py-2 text-center">ยังไม่มีรายการอาหารเย็น</p>';
-            } else {
-                dListEl.innerHTML = '';
-                dIds.forEach(id => {
-                    const item = menuItems.find(m => m.id === id);
-                    const qty = cart.dinner[id];
-                    const sub = item.price * qty;
-                    dSubtotal += sub;
-                    const div = document.createElement('div');
-                    div.className = 'py-1.5 flex items-center justify-between';
-                    div.innerHTML = `<span class="text-slate-700">${item.name} x ${qty}</span><span class="font-bold text-rtafNavy">${sub.toLocaleString()} บาท</span>`;
-                    dListEl.appendChild(div);
-                });
+            if (dListEl) {
+                if (dIds.length === 0) {
+                    dListEl.innerHTML = '<p class="text-slate-400 py-2 text-center">ยังไม่มีรายการอาหารเย็น</p>';
+                } else {
+                    dListEl.innerHTML = '';
+                    dIds.forEach(id => {
+                        const item = menuItems.find(m => m.id === id);
+                        const qty = cart.dinner[id];
+                        const sub = item.price * qty;
+                        dSubtotal += sub;
+                        const div = document.createElement('div');
+                        div.className = 'py-1.5 flex items-center justify-between';
+                        div.innerHTML = `<span class="text-slate-700">${item.name} x ${qty}</span><span class="font-bold text-rtafNavy">${sub.toLocaleString()} บาท</span>`;
+                        dListEl.appendChild(div);
+                    });
+                }
             }
 
-            document.getElementById('breakfast-subtotal').innerText = `${bSubtotal.toLocaleString()} บาท`;
-            document.getElementById('dinner-subtotal').innerText = `${dSubtotal.toLocaleString()} บาท`;
-            document.getElementById('cart-total-amount').innerText = `${(bSubtotal + dSubtotal).toLocaleString()} บาท`;
+            const bSubEl = document.getElementById('breakfast-subtotal');
+            const dSubEl = document.getElementById('dinner-subtotal');
+            const totalEl = document.getElementById('cart-total-amount');
+            if (bSubEl) bSubEl.innerText = `${bSubtotal.toLocaleString()} บาท`;
+            if (dSubEl) dSubEl.innerText = `${dSubtotal.toLocaleString()} บาท`;
+            if (totalEl) totalEl.innerText = `${(bSubtotal + dSubtotal).toLocaleString()} บาท`;
         }
 
         function buildOrderSummaryMessage() {
-            const room = document.getElementById('food-room-select').value;
-            const bTime = document.getElementById('breakfast-serve-time').value.trim() || 'ตามเวลาปกติ';
-            const dTime = document.getElementById('dinner-serve-time').value.trim() || 'ตามเวลาปกติ';
-            const extra = document.getElementById('food-extra-details').value.trim() || '-';
-            const guestInfo = bookingState ? `หัวหน้าคณะ: ${bookingState.headName} (โทร. ${bookingState.phone})\nวันที่เข้าพัก: ${bookingState.checkin}` : `วันที่เข้าพัก: ${document.getElementById('checkin-date').value || '-'}`;
+            const roomEl = document.getElementById('food-room-select');
+            const room = roomEl ? roomEl.value : 'ห้อง 1101';
+            const bTimeEl = document.getElementById('breakfast-serve-time');
+            const dTimeEl = document.getElementById('dinner-serve-time');
+            const extraEl = document.getElementById('food-extra-details');
+
+            const bTime = bTimeEl ? bTimeEl.value.trim() || 'ตามเวลาปกติ' : 'ตามเวลาปกติ';
+            const dTime = dTimeEl ? dTimeEl.value.trim() || 'ตามเวลาปกติ' : 'ตามเวลาปกติ';
+            const extra = extraEl ? extraEl.value.trim() || '-' : '-';
+            const checkinEl = document.getElementById('checkin-date');
+            const guestInfo = bookingState ? `หัวหน้าคณะ: ${bookingState.headName} (โทร. ${bookingState.phone})\nวันที่เข้าพัก: ${bookingState.checkin}` : `วันที่เข้าพัก: ${checkinEl ? checkinEl.value : '-'}`;
 
             let bLines = [], bTotal = 0;
             Object.keys(cart.breakfast).forEach((id, idx) => {
@@ -1120,7 +1079,9 @@
 
         function showToast(message) {
             const banner = document.getElementById('toast-banner');
-            document.getElementById('toast-text').innerText = message;
+            const textEl = document.getElementById('toast-text');
+            if (!banner || !textEl) return;
+            textEl.innerText = message;
             banner.classList.remove('opacity-0');
             banner.classList.add('opacity-100');
             clearTimeout(window._toastTimer);
@@ -1132,3 +1093,4 @@
     </script>
 </body>
 </html>
+```eof
