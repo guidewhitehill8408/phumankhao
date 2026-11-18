@@ -65,7 +65,7 @@
             </div>
         </header>
 
-        <!-- Navigation Bar (เพิ่มเมนู ผู้ดูแลบ้านพัก) -->
+        <!-- Navigation Bar -->
         <nav id="app-nav" class="bg-rtafNavyLight text-white border-b border-rtafGold/30 grid grid-cols-4 text-center sticky top-[68px] z-30 hidden">
             <button onclick="switchTab('regulations')" id="nav-btn-regulations" class="py-3 px-0.5 text-[11px] font-bold border-b-2 border-rtafGold text-rtafGoldLight bg-rtafNavy transition-all">
                 1. ระเบียบ
@@ -550,7 +550,6 @@
             }
 
             if (tabName === 'admin') {
-                // รีเซ็ตหน้าจอผู้ดูแลให้ถามรหัสผ่านทุกครั้งที่กดเข้ามาใหม่
                 document.getElementById('admin-password-input').value = '';
                 document.getElementById('admin-login-box').classList.remove('hidden');
                 document.getElementById('admin-dashboard-box').classList.add('hidden');
@@ -689,6 +688,24 @@
 
         let occupiedRoomsByDate = JSON.parse(localStorage.getItem('phumankhao_central_calendar')) || {};
         let allBookingsList = JSON.parse(localStorage.getItem('phumankhao_admin_bookings')) || [];
+
+        // ฟังก์ชันสำรองข้อมูลอัตโนมัติ กรณีข้อมูลแยกกันอยู่
+        if (allBookingsList.length === 0 && Object.keys(occupiedRoomsByDate).length > 0) {
+            Object.keys(occupiedRoomsByDate).forEach((dateStr, idx) => {
+                allBookingsList.push({
+                    id: 'BK-RESCUE-' + idx,
+                    checkin: dateStr,
+                    checkout: dateStr,
+                    rooms: occupiedRoomsByDate[dateStr],
+                    guestCount: 'ไม่ระบุ',
+                    recommenderName: 'ระบบกู้คืนอัตโนมัติ',
+                    headName: 'ผู้เข้าพัก (ข้อมูลเดิม)',
+                    phone: '-',
+                    foodOrder: null
+                });
+            });
+            localStorage.setItem('phumankhao_admin_bookings', JSON.stringify(allBookingsList));
+        }
 
         const thaiMonths = [
             'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
@@ -845,7 +862,6 @@
             });
             localStorage.setItem('phumankhao_central_calendar', JSON.stringify(occupiedRoomsByDate));
 
-            // บันทึกข้อมูลลงระบบหลังบ้าน
             const newBooking = {
                 id: 'BK-' + Date.now(),
                 checkin,
@@ -1102,7 +1118,6 @@
             const msg = buildOrderSummaryMessage();
             closeConfirmModal();
 
-            // บันทึกรายการอาหารลงใน booking ล่าสุด
             if (allBookingsList.length > 0) {
                 allBookingsList[0].foodOrder = {
                     breakfast: JSON.parse(JSON.stringify(cart.breakfast)),
@@ -1134,7 +1149,6 @@
             showToast('บันทึกรายการอาหารและซิงค์ปฏิทินเรียบร้อยแล้ว');
         }
 
-        // ฟังก์ชันแสดงรายการทั้งหมดในหน้าผู้ดูแล (Admin Dashboard)
         function renderAdminBookingsList() {
             const container = document.getElementById('admin-bookings-container');
             if (!container) return;
@@ -1147,7 +1161,7 @@
             }
 
             container.innerHTML = '';
-            allBookingsList.forEach((bk, index) => {
+            allBookingsList.forEach((bk) => {
                 let foodDetailsHtml = '<p class="text-slate-500 italic">ไม่ได้สั่งอาหารล่วงหน้า</p>';
                 if (bk.foodOrder) {
                     let bItemsText = Object.keys(bk.foodOrder.breakfast).map(id => {
@@ -1194,15 +1208,12 @@
             });
         }
 
-        // ฟังก์ชันยกเลิกการจองและปลดล็อกห้องพักคืนสถานะว่าง
         function cancelBookingById(bookingId, checkinDate, roomsStr) {
             if (!confirm('ยืนยันการยกเลิกการจองนี้? ห้องพักจะถูกปลดล็อกกลับเป็นสถานะว่าง')) return;
 
-            // ลบออกจากรายการจองหลังบ้าน
             allBookingsList = allBookingsList.filter(b => b.id !== bookingId);
             localStorage.setItem('phumankhao_admin_bookings', JSON.stringify(allBookingsList));
 
-            // คืนสถานะห้องว่างในปฏิทินกลาง
             const roomsArray = roomsStr.split(',');
             if (occupiedRoomsByDate[checkinDate]) {
                 occupiedRoomsByDate[checkinDate] = occupiedRoomsByDate[checkinDate].filter(r => !roomsArray.includes(r));
