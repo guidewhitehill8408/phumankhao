@@ -249,8 +249,8 @@
                             <input type="date" id="checkout-date" required class="w-full p-2 text-xs rounded border border-slate-300 focus:outline-none focus:border-rtafNavy">
                         </div>
                     </div>
-                    <p class="text-[11px] text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-1.5 rounded">
-                        หมายเหตุ: กรุณาทำรายการจองล่วงหน้าก่อนวันเข้าพักอย่างน้อย 4 วัน
+                    <p class="text-[11px] text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-1.5 rounded">
+                        หมายเหตุ: สามารถจองห้องพักวันเข้าพักได้ทันที (สำหรับการสั่งอาหารล่วงหน้า ต้องจองก่อนวันเข้าพักอย่างน้อย 4 วัน)
                     </p>
 
                     <div class="space-y-2">
@@ -316,10 +316,35 @@
                         <p class="font-bold text-emerald-900">บันทึกการจองเรียบร้อยแล้ว</p>
                     </div>
                     <div id="booking-summary-text" class="space-y-1 text-emerald-900 leading-relaxed"></div>
-                    <div class="pt-1">
+                    <div id="food-eligibility-notice" class="hidden bg-amber-50 border border-amber-300 text-amber-900 p-2.5 rounded text-[11px] leading-relaxed"></div>
+                    <div id="booking-next-action-container" class="pt-1">
                         <button type="button" onclick="switchTab('food')" class="w-full py-2.5 px-3 gold-accent-btn font-bold rounded shadow-sm hover:opacity-95 transition">
                             ดำเนินการต่อ: สั่งอาหารล่วงหน้า (ขั้นตอนที่ 3)
                         </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. FOOD ORDERING -->
+            <section id="tab-food" class="p-4 space-y-5 hidden bg-slate-50">
+                <!-- Banner แจ้งเตือนกรณีไม่สามารถสั่งอาหารได้ (จองน้อยกว่า 4 วัน) -->
+                <div id="food-locked-banner" class="hidden bg-red-50 border-2 border-red-300 rounded-lg p-4 space-y-3 text-xs shadow-sm">
+                    <div class="border-b border-red-200 pb-2">
+                        <p class="font-bold text-red-900 text-sm">ไม่สามารถสั่งอาหารล่วงหน้าได้</p>
+                    </div>
+                    <p class="text-red-800 leading-relaxed">
+                        เนื่องจากท่านทำรายการจองห้องพักน้อยกว่า 4 วันก่อนวันเข้าพัก ระบบจึงสงวนสิทธิ์งดรับรายการสั่งอาหารล่วงหน้า แต่การจองห้องพักของท่านได้รับการบันทึกเรียบร้อยแล้ว
+                    </p>
+                    <button type="button" onclick="skipToFinalSummary()" class="w-full py-2.5 px-3 bg-rtafNavy text-rtafGoldLight border border-rtafGold font-bold rounded shadow-sm hover:bg-rtafNavyLight transition">
+                        ข้ามไปยังหน้าสรุปการจองเสร็จสมบูรณ์
+                    </button>
+                </div>
+
+                <!-- ส่วนเนื้อหาการสั่งอาหารปกติ -->
+                <div id="food-ordering-content" class="space-y-5">
+                    <div class="border-l-4 border-rtafGold bg-rtafNavy text-white p-4 rounded-r-lg shadow-sm">
+                        <h2 class="font-bold text-sm text-rtafGoldLight">สั่งอาหารล่วงหน้า (แยกมื้อเช้า / มื้อเย็น)</h2>
+                        <p class="text-xs text-slate-300 mt-1">ระบบจะบันทึกรายการอาหารลงปฏิทิน Google อัตโนมัติ</p>
                     </div>
                 </div>
             </section>
@@ -428,6 +453,7 @@
                         ยืนยันรายการ
                     </button>
                 </div>
+                </div> <!-- ปิด food-ordering-content -->
 
                 <div id="food-confirm-modal" class="hidden fixed inset-0 bg-slate-900/75 z-50 flex items-center justify-center p-4">
                     <div class="bg-white w-full max-w-sm rounded-lg border-2 border-rtafGold shadow-xl overflow-hidden">
@@ -485,14 +511,92 @@
                 return;
             }
 
+            // ตรวจสอบสิทธิ์การสั่งอาหารเมื่อเข้าสู่แท็บสั่งอาหาร
+            if (tabName === 'food') {
+                checkFoodOrderingEligibility();
+            }
+
             ['regulations', 'booking', 'food'].forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if (el) el.classList.add('hidden');
-                const btn = document.getElementById(`nav-btn-${t}`);
-                if (btn) {
-                    btn.classList.remove('border-rtafGold', 'text-rtafGoldLight', 'bg-rtafNavy', 'font-bold');
-                    btn.classList.add('border-transparent', 'text-slate-300', 'font-medium');
-                }
+// ... existing code ... -->
+        window.onload = function () {
+            // ปลดล็อกให้เลือกจองได้ตั้งแต่วันนี้เป็นต้นไป (ไม่ต้องรอ 4 วัน)
+            const today = new Date(2026, 10, 18);
+            const nextDay = new Date(today);
+            nextDay.setDate(today.getDate() + 1);
+
+            const formatYMD = (d) => {
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${y}-${m}-${day}`;
+            };
+
+            const checkinInput = document.getElementById('checkin-date');
+            const checkoutInput = document.getElementById('checkout-date');
+            if (checkinInput) {
+                checkinInput.min = formatYMD(today);
+                checkinInput.value = formatYMD(today);
+            }
+            if (checkoutInput) {
+                checkoutInput.min = formatYMD(nextDay);
+                checkoutInput.value = formatYMD(nextDay);
+            }
+
+            renderCalendar();
+            updateRoomAvailabilityByDate();
+            renderFoodMenu('all');
+            updateCartSummary();
+        };
+
+        // ฟังก์ชันคำนวณระยะห่างวัน (วันเข้าพัก - วันปัจจุบัน)
+        function isEligibleForFoodOrder(checkinStr) {
+            if (!checkinStr) return false;
+            const today = new Date(2026, 10, 18);
+            today.setHours(0, 0, 0, 0);
+            const parts = checkinStr.split('-');
+            const checkinDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+            checkinDate.setHours(0, 0, 0, 0);
+            const diffTime = checkinDate.getTime() - today.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays >= 4;
+        }
+
+        function checkFoodOrderingEligibility() {
+            const checkinVal = bookingState ? bookingState.checkin : document.getElementById('checkin-date').value;
+            const canOrderFood = isEligibleForFoodOrder(checkinVal);
+            const lockedBanner = document.getElementById('food-locked-banner');
+            const contentArea = document.getElementById('food-ordering-content');
+
+            if (!canOrderFood) {
+                if (lockedBanner) lockedBanner.classList.remove('hidden');
+                if (contentArea) contentArea.classList.add('hidden');
+            } else {
+                if (lockedBanner) lockedBanner.classList.add('hidden');
+                if (contentArea) contentArea.classList.remove('hidden');
+            }
+        }
+
+        function skipToFinalSummary() {
+            const checkinVal = bookingState ? bookingState.checkin : document.getElementById('checkin-date').value;
+            const roomsStr = bookingState ? `ห้อง ${bookingState.rooms.join(', ')}` : 'ตามรายการที่จอง';
+            const guestInfo = bookingState ? `หัวหน้าคณะ: ${bookingState.headName} (โทร. ${bookingState.phone})\nวันที่เข้าพัก: ${bookingState.checkin} ถึง ${bookingState.checkout}` : `วันที่เข้าพัก: ${checkinVal}`;
+
+            const finalMsg = [
+                `[สรุปการจองบ้านพักรับรอง เสร็จสมบูรณ์]`,
+                `สถานีรายงานภูหมันขาว | ${roomsStr}`,
+                guestInfo,
+                `--------------------------------`,
+                `รายการอาหาร: ไม่ได้สั่งล่วงหน้า (เข้าพักน้อยกว่า 4 วัน)`,
+                `สถานะ: บันทึกการจองลงปฏิทินเรียบร้อยแล้ว`
+            ].join('\n');
+
+            document.getElementById('line-message-preview').innerText = finalMsg;
+            document.getElementById('line-dispatch-summary').classList.remove('hidden');
+            document.getElementById('food-locked-banner').classList.add('hidden');
+            showToast('ดำเนินการเสร็จสมบูรณ์');
+        }
             });
 
             const targetTab = document.getElementById(`tab-${tabName}`);
@@ -784,8 +888,32 @@
                 <p><strong>หัวหน้าคณะ:</strong> ${headName} (โทร. ${phone})</p>
                 <p><strong>ผู้แนะนำจอง:</strong> ${recommenderName}</p>
             `;
+
+            const canOrderFood = isEligibleForFoodOrder(checkin);
+            const noticeBox = document.getElementById('food-eligibility-notice');
+            const actionBtnContainer = document.getElementById('booking-next-action-container');
+
+            if (!canOrderFood) {
+                // กรณีจองน้อยกว่า 4 วัน: แจ้งเตือนและเปลี่ยนปุ่มเป็นข้ามไปขั้นตอนสุดท้ายเลย
+                noticeBox.classList.remove('hidden');
+                noticeBox.innerHTML = `<strong>หมายเหตุการสั่งอาหาร:</strong> เนื่องจากท่านจองห้องพักก่อนวันเข้าพักน้อยกว่า 4 วัน ระบบจึงไม่สามารถเปิดให้สั่งอาหารล่วงหน้าได้ ท่านสามารถกดปุ่มด้านล่างเพื่อเสร็จสิ้นการจองทันที`;
+                actionBtnContainer.innerHTML = `
+                    <button type="button" onclick="switchTab('food'); skipToFinalSummary();" class="w-full py-2.5 px-3 bg-rtafNavy text-rtafGoldLight border border-rtafGold font-bold rounded shadow-sm hover:bg-rtafNavyLight transition">
+                        เสร็จสิ้นการจอง (ข้ามขั้นตอนสั่งอาหาร)
+                    </button>
+                `;
+            } else {
+                // กรณีจองล่วงหน้า >= 4 วัน: สั่งอาหารได้ตามปกติ
+                noticeBox.classList.add('hidden');
+                actionBtnContainer.innerHTML = `
+                    <button type="button" onclick="switchTab('food')" class="w-full py-2.5 px-3 gold-accent-btn font-bold rounded shadow-sm hover:opacity-95 transition">
+                        ดำเนินการต่อ: สั่งอาหารล่วงหน้า (ขั้นตอนที่ 3)
+                    </button>
+                `;
+            }
+
             document.getElementById('booking-confirmed-panel').classList.remove('hidden');
-            showToast('บันทึกการจองและอัปเดตปฏิทินระบบจองบ้าน สร.ภม. เรียบร้อยแล้ว');
+            showToast('บันทึกการจองเรียบร้อยแล้ว');
         }
 
         function updateMealSelection() {
