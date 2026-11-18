@@ -65,16 +65,19 @@
             </div>
         </header>
 
-        <!-- Navigation Bar -->
-        <nav id="app-nav" class="bg-rtafNavyLight text-white border-b border-rtafGold/30 grid grid-cols-3 text-center sticky top-[68px] z-30 hidden">
-            <button onclick="switchTab('regulations')" id="nav-btn-regulations" class="py-3 px-1 text-xs font-bold border-b-2 border-rtafGold text-rtafGoldLight bg-rtafNavy transition-all">
+        <!-- Navigation Bar (เพิ่มเมนู ผู้ดูแลบ้านพัก) -->
+        <nav id="app-nav" class="bg-rtafNavyLight text-white border-b border-rtafGold/30 grid grid-cols-4 text-center sticky top-[68px] z-30 hidden">
+            <button onclick="switchTab('regulations')" id="nav-btn-regulations" class="py-3 px-0.5 text-[11px] font-bold border-b-2 border-rtafGold text-rtafGoldLight bg-rtafNavy transition-all">
                 1. ระเบียบ
             </button>
-            <button onclick="switchTab('booking')" id="nav-btn-booking" class="py-3 px-1 text-xs font-medium border-b-2 border-transparent text-slate-300 hover:text-white transition-all">
+            <button onclick="switchTab('booking')" id="nav-btn-booking" class="py-3 px-0.5 text-[11px] font-medium border-b-2 border-transparent text-slate-300 hover:text-white transition-all">
                 2. จองห้อง
             </button>
-            <button onclick="switchTab('food')" id="nav-btn-food" class="py-3 px-1 text-xs font-medium border-b-2 border-transparent text-slate-300 hover:text-white transition-all">
+            <button onclick="switchTab('food')" id="nav-btn-food" class="py-3 px-0.5 text-[11px] font-medium border-b-2 border-transparent text-slate-300 hover:text-white transition-all">
                 3. สั่งอาหาร
+            </button>
+            <button onclick="switchTab('admin')" id="nav-btn-admin" class="py-3 px-0.5 text-[11px] font-medium border-b-2 border-transparent text-slate-300 hover:text-white transition-all">
+                ผู้ดูแล
             </button>
         </nav>
 
@@ -94,9 +97,12 @@
                     </div>
                 </div>
 
-                <div class="w-full max-w-xs pt-2">
-                    <button type="button" onclick="enterApp()" class="w-full py-4 px-4 gold-accent-btn font-bold text-sm rounded-xl shadow-lg hover:opacity-95 transition tracking-wide uppercase">
+                <div class="w-full max-w-xs pt-2 space-y-3">
+                    <button type="button" onclick="enterApp()" class="w-full py-3.5 px-4 gold-accent-btn font-bold text-sm rounded-xl shadow-lg hover:opacity-95 transition tracking-wide uppercase">
                         เข้าสู่ระบบจองบ้านพัก
+                    </button>
+                    <button type="button" onclick="openAdminDirectly()" class="w-full py-2.5 px-4 bg-rtafNavyLight text-rtafGoldLight border border-rtafGold/50 font-semibold text-xs rounded-xl hover:bg-rtafNavy transition">
+                        🔒 เข้าสู่ระบบผู้ดูแลบ้านพัก
                     </button>
                 </div>
             </section>
@@ -248,9 +254,6 @@
                             <input type="date" id="checkout-date" required class="w-full p-2 text-xs rounded border border-slate-300 focus:outline-none focus:border-rtafNavy">
                         </div>
                     </div>
-                    <p class="text-[11px] text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-1.5 rounded">
-                        หมายเหตุ: สามารถจองห้องพักวันเข้าพักได้ทันที
-                    </p>
 
                     <div class="space-y-2">
                         <label class="block font-semibold text-slate-700 text-xs">เลือกห้องพัก (สามารถติ๊กเลือกได้หลายห้อง)</label>
@@ -306,16 +309,17 @@
                     </div>
 
                     <button type="submit" class="w-full py-3 rounded-lg font-bold text-xs tracking-wide bg-rtafNavy text-rtafGoldLight border border-rtafGold hover:bg-rtafNavyLight transition shadow-sm">
-                        ยืนยันการจอง
+                        ยืนยันการจองห้องพัก
                     </button>
                 </form>
 
                 <div id="booking-confirmed-panel" class="hidden bg-emerald-50 border border-emerald-300 rounded-lg p-4 space-y-3 text-xs shadow-sm">
                     <div class="border-b border-emerald-200 pb-2">
-                        <p class="font-bold text-emerald-900">บันทึกการจองเรียบร้อยแล้ว</p>
+                        <p class="font-bold text-emerald-900 text-sm">บันทึกการจองสำเร็จเรียบร้อยแล้ว</p>
                     </div>
                     <div id="booking-summary-text" class="space-y-1 text-emerald-900 leading-relaxed"></div>
-                    <div class="pt-1 space-y-2">
+                    
+                    <div class="pt-2 space-y-2">
                         <a id="gcal-auto-sync-btn" href="#" target="_blank" rel="noopener noreferrer" class="block w-full py-2.5 px-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded text-center transition shadow">
                             📅 บันทึกเข้า Google Calendar (bansoropomo@gmail.com)
                         </a>
@@ -370,13 +374,13 @@
                     </div>
                     <div class="grid grid-cols-5 gap-1.5">
                         <button type="button" onclick="filterFoodCategory('all')" id="cat-btn-all" class="cat-btn py-2 px-1 rounded text-[11px] font-bold bg-rtafNavy text-rtafGoldLight border border-rtafGold text-center leading-tight">ทั้งหมด</button>
-                        <button type="button" onclick="filterFoodCategory('ผัด/ทอด')" id="cat-btn-ผัด/ทอด" class="cat-btn py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">ประเภทผัด/ทอด</button>
-                        <button type="button" onclick="filterFoodCategory('กับแกล้ม')" id="cat-btn-กับแกล้ม" class="cat-btn py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">ประเภทกับแกล้ม</button>
-                        <button type="button" onclick="filterFoodCategory('อาหารอีสาน')" id="cat-btn-อาหารอีสาน" class="cat-btn py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">ประเภทอาหารอีสาน</button>
-                        <button type="button" onclick="filterFoodCategory('ต้ม/แกง')" id="cat-btn-ต้ม/แกง" class="cat-btn py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">ประเภทต้ม/แกง</button>
-                        <button type="button" onclick="filterFoodCategory('ยำ/ย่าง')" id="cat-btn-ยำ/ย่าง" class="cat-btn py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">ประเภทยำ/ย่าง</button>
-                        <button type="button" onclick="filterFoodCategory('อาหารจานเดียว')" id="cat-btn-อาหารจานเดียว" class="cat-btn py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">ประเภทอาหารจานเดียว</button>
-                        <button type="button" onclick="filterFoodCategory('ข้าว')" id="cat-btn-ข้าว" class="cat-btn py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">ประเภทข้าว</button>
+                        <button type="button" onclick="filterFoodCategory('ผัด/ทอด')" id="cat-btn-ผัด/ทอด" class="cat-btn py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">ผัด/ทอด</button>
+                        <button type="button" onclick="filterFoodCategory('กับแกล้ม')" id="cat-btn-กับแกล้ม" class="cat-btn py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">กับแกล้ม</button>
+                        <button type="button" onclick="filterFoodCategory('อาหารอีสาน')" id="cat-btn-อาหารอีสาน" class="cat-btn py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">อาหารอีสาน</button>
+                        <button type="button" onclick="filterFoodCategory('ต้ม/แกง')" id="cat-btn-ต้ม/แกง" class="cat-btn py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">ต้ม/แกง</button>
+                        <button type="button" onclick="filterFoodCategory('ยำ/ย่าง')" id="cat-btn-ยำ/ย่าง" class="cat-btn py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">ยำ/ย่าง</button>
+                        <button type="button" onclick="filterFoodCategory('อาหารจานเดียว')" id="cat-btn-อาหารจานเดียว" class="cat-btn py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">จานเดียว</button>
+                        <button type="button" onclick="filterFoodCategory('ข้าว')" id="cat-btn-ข้าว" class="cat-btn py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">ข้าว</button>
                         <button type="button" onclick="filterFoodCategory('เครื่องดื่ม')" id="cat-btn-เครื่องดื่ม" class="cat-btn col-span-2 py-2 px-1 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-300 text-center leading-tight">เครื่องดื่ม</button>
                     </div>
                 </div>
@@ -435,7 +439,7 @@
                     <div class="bg-white w-full max-w-sm rounded-lg border-2 border-rtafGold shadow-xl overflow-hidden">
                         <div class="bg-rtafNavy text-rtafGoldLight px-4 py-3 border-b border-rtafGold">
                             <h4 class="font-bold text-sm">ยืนยันการบันทึกรายการอาหาร</h4>
-                            <p class="text-[11px] text-slate-300 mt-0.5">ระบบจะบันทึกข้อมูลลงในปฏิทิน Google อัตโนมัติ</p>
+                            <p class="text-[11px] text-slate-300 mt-0.5">ระบบจะบันทึกข้อมูลลงในระบบหลังบ้านและปฏิทิน Google</p>
                         </div>
                         <div class="p-4 space-y-3 text-xs">
                             <pre id="modal-order-preview" class="bg-slate-50 border border-slate-200 rounded p-3 text-slate-800 whitespace-pre-wrap font-sans leading-relaxed max-h-60 overflow-y-auto"></pre>
@@ -450,7 +454,7 @@
                 <div id="line-dispatch-summary" class="hidden bg-emerald-50 border-2 border-emerald-300 rounded-lg p-4 space-y-3 shadow-sm">
                     <div class="border-b border-emerald-200 pb-2">
                         <p class="text-[11px] font-bold uppercase text-emerald-800">บันทึกสำเร็จ</p>
-                        <h4 class="font-bold text-sm text-emerald-950">บันทึกรายการลงในปฏิทิน Google อัตโนมัติแล้ว</h4>
+                        <h4 class="font-bold text-sm text-emerald-950">บันทึกรายการอาหารและห้องพักเรียบร้อยแล้ว</h4>
                     </div>
                     <pre id="line-message-preview" class="bg-white border border-emerald-200 rounded p-3 text-xs text-slate-800 whitespace-pre-wrap font-sans leading-relaxed"></pre>
                     <div class="space-y-2 pt-1">
@@ -458,6 +462,49 @@
                             📅 บันทึกเข้า Google Calendar (bansoropomo@gmail.com)
                         </a>
                         <button type="button" onclick="copyLineOrderText()" class="w-full py-2.5 px-3 bg-white border border-emerald-700 text-emerald-800 font-bold text-xs rounded hover:bg-emerald-50 transition">คัดลอกรายการ</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. ADMIN PANEL (ผู้ดูแลบ้านพัก - มีรหัสผ่านป้องกัน) -->
+            <section id="tab-admin" class="p-4 space-y-5 hidden bg-slate-50">
+                <!-- ส่วนกล่องใส่รหัสผ่าน -->
+                <div id="admin-login-box" class="bg-white rounded-lg border border-slate-300 p-6 space-y-4 shadow-sm text-center">
+                    <div class="w-14 h-14 bg-rtafNavy text-rtafGold rounded-full flex items-center justify-center mx-auto text-2xl shadow">
+                        🔒
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-base text-rtafNavy">เข้าสู่ระบบผู้ดูแลบ้านพัก</h2>
+                        <p class="text-xs text-slate-500 mt-1">กรุณากรอกรหัสผ่าน 8 หลักเพื่อเข้าดูรายการจอง</p>
+                    </div>
+                    <div class="space-y-2 pt-2">
+                        <input type="password" id="admin-password-input" maxlength="8" placeholder="••••••••" class="w-full p-3 text-center tracking-widest text-lg rounded border border-slate-300 focus:outline-none focus:border-rtafNavy font-mono">
+                        <button type="button" onclick="verifyAdminPassword()" class="w-full py-3 bg-rtafNavy text-rtafGoldLight border border-rtafGold font-bold text-xs rounded-lg hover:bg-rtafNavyLight transition shadow">
+                            เข้าสู่ระบบผู้ดูแล
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ส่วนแสดงรายการจัดการหลังบ้าน (แสดงหลังใส่รหัสถูกต้อง) -->
+                <div id="admin-dashboard-box" class="hidden space-y-4">
+                    <div class="border-l-4 border-rtafGold bg-rtafNavy text-white p-4 rounded-r-lg shadow-sm flex items-center justify-between">
+                        <div>
+                            <h2 class="font-bold text-sm text-rtafGoldLight">ระบบจัดการผู้ดูแลบ้านพัก</h2>
+                            <p class="text-[11px] text-slate-300 mt-0.5">สถานีรายงานภูหมันขาว</p>
+                        </div>
+                        <button type="button" onclick="lockAdminPanel()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-semibold text-[11px] rounded transition">
+                            ออกจากระบบ
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-slate-200 p-4 space-y-3 shadow-sm">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                            <h3 class="font-bold text-xs uppercase tracking-wider text-rtafNavy">รายการจองและสั่งอาหารทั้งหมด</h3>
+                            <button type="button" onclick="renderAdminBookingsList()" class="text-[11px] text-rtafNavy font-semibold hover:underline">🔄 รีเฟรชข้อมูล</button>
+                        </div>
+                        <div id="admin-bookings-container" class="space-y-3">
+                            <!-- รายการจองจะถูกแทรกเข้ามาตรงนี้ -->
+                        </div>
                     </div>
                 </div>
             </section>
@@ -484,13 +531,32 @@
             switchTab('regulations');
         }
 
+        function openAdminDirectly() {
+            const cover = document.getElementById('tab-cover');
+            const header = document.getElementById('app-header');
+            const nav = document.getElementById('app-nav');
+            
+            if (cover) cover.classList.add('hidden');
+            if (header) header.classList.remove('hidden');
+            if (nav) nav.classList.remove('hidden');
+            
+            switchTab('admin');
+        }
+
         function switchTab(tabName) {
             if ((tabName === 'booking' || tabName === 'food') && !document.getElementById('agree-checkbox').checked) {
                 showToast('กรุณากดรับทราบระเบียบข้อบังคับก่อนดำเนินการต่อ');
                 return;
             }
 
-            ['regulations', 'booking', 'food'].forEach(t => {
+            if (tabName === 'admin') {
+                // รีเซ็ตหน้าจอผู้ดูแลให้ถามรหัสผ่านทุกครั้งที่กดเข้ามาใหม่
+                document.getElementById('admin-password-input').value = '';
+                document.getElementById('admin-login-box').classList.remove('hidden');
+                document.getElementById('admin-dashboard-box').classList.add('hidden');
+            }
+
+            ['regulations', 'booking', 'food', 'admin'].forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if (el) el.classList.add('hidden');
                 const btn = document.getElementById(`nav-btn-${t}`);
@@ -510,6 +576,25 @@
             }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function verifyAdminPassword() {
+            const pwd = document.getElementById('admin-password-input').value.trim();
+            if (pwd === '84088408') {
+                document.getElementById('admin-login-box').classList.add('hidden');
+                document.getElementById('admin-dashboard-box').classList.remove('hidden');
+                renderAdminBookingsList();
+                showToast('เข้าสู่ระบบผู้ดูแลสำเร็จ');
+            } else {
+                showToast('รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง');
+            }
+        }
+
+        function lockAdminPanel() {
+            document.getElementById('admin-password-input').value = '';
+            document.getElementById('admin-dashboard-box').classList.add('hidden');
+            document.getElementById('admin-login-box').classList.remove('hidden');
+            showToast('ออกจากระบบผู้ดูแลแล้ว');
         }
 
         function toggleAgreeButton() {
@@ -603,6 +688,7 @@
         let currentCalMonth = 10;
 
         let occupiedRoomsByDate = JSON.parse(localStorage.getItem('phumankhao_central_calendar')) || {};
+        let allBookingsList = JSON.parse(localStorage.getItem('phumankhao_admin_bookings')) || [];
 
         const thaiMonths = [
             'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
@@ -759,7 +845,22 @@
             });
             localStorage.setItem('phumankhao_central_calendar', JSON.stringify(occupiedRoomsByDate));
 
-            bookingState = { checkin, checkout, rooms: selectedRooms, guestCount, recommenderName, headName, phone };
+            // บันทึกข้อมูลลงระบบหลังบ้าน
+            const newBooking = {
+                id: 'BK-' + Date.now(),
+                checkin,
+                checkout,
+                rooms: selectedRooms,
+                guestCount,
+                recommenderName,
+                headName,
+                phone,
+                foodOrder: null
+            };
+            allBookingsList.unshift(newBooking);
+            localStorage.setItem('phumankhao_admin_bookings', JSON.stringify(allBookingsList));
+
+            bookingState = newBooking;
             renderCalendar();
             updateRoomAvailabilityByDate();
 
@@ -1001,6 +1102,19 @@
             const msg = buildOrderSummaryMessage();
             closeConfirmModal();
 
+            // บันทึกรายการอาหารลงใน booking ล่าสุด
+            if (allBookingsList.length > 0) {
+                allBookingsList[0].foodOrder = {
+                    breakfast: JSON.parse(JSON.stringify(cart.breakfast)),
+                    dinner: JSON.parse(JSON.stringify(cart.dinner)),
+                    breakfastTime: document.getElementById('breakfast-serve-time').value,
+                    dinnerTime: document.getElementById('dinner-serve-time').value,
+                    extra: document.getElementById('food-extra-details').value,
+                    summaryText: msg
+                };
+                localStorage.setItem('phumankhao_admin_bookings', JSON.stringify(allBookingsList));
+            }
+
             const checkinVal = bookingState ? bookingState.checkin : document.getElementById('checkin-date').value;
             const checkoutVal = bookingState ? bookingState.checkout : checkinVal;
             const headName = bookingState ? bookingState.headName : 'ไม่ระบุ';
@@ -1017,7 +1131,91 @@
 
             document.getElementById('line-message-preview').innerText = msg;
             document.getElementById('line-dispatch-summary').classList.remove('hidden');
-            showToast('บันทึกลงปฏิทิน Google อัตโนมัติเรียบร้อยแล้ว');
+            showToast('บันทึกรายการอาหารและซิงค์ปฏิทินเรียบร้อยแล้ว');
+        }
+
+        // ฟังก์ชันแสดงรายการทั้งหมดในหน้าผู้ดูแล (Admin Dashboard)
+        function renderAdminBookingsList() {
+            const container = document.getElementById('admin-bookings-container');
+            if (!container) return;
+
+            allBookingsList = JSON.parse(localStorage.getItem('phumankhao_admin_bookings')) || [];
+
+            if (allBookingsList.length === 0) {
+                container.innerHTML = '<p class="text-slate-400 py-6 text-center text-xs">ยังไม่มีรายการจองในระบบ</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            allBookingsList.forEach((bk, index) => {
+                let foodDetailsHtml = '<p class="text-slate-500 italic">ไม่ได้สั่งอาหารล่วงหน้า</p>';
+                if (bk.foodOrder) {
+                    let bItemsText = Object.keys(bk.foodOrder.breakfast).map(id => {
+                        const m = menuItems.find(item => item.id === id);
+                        return `${m ? m.name : id} x ${bk.foodOrder.breakfast[id]}`;
+                    }).join(', ');
+
+                    let dItemsText = Object.keys(bk.foodOrder.dinner).map(id => {
+                        const m = menuItems.find(item => item.id === id);
+                        return `${m ? m.name : id} x ${bk.foodOrder.dinner[id]}`;
+                    }).join(', ');
+
+                    foodDetailsHtml = `
+                        <div class="bg-slate-50 border border-slate-200 rounded p-2 text-[11px] space-y-1">
+                            <p class="font-bold text-rtafNavy">🍽️ รายการอาหารที่สั่ง:</p>
+                            ${bItemsText ? `<p><strong>อาหารเช้า (${bk.foodOrder.breakfastTime || 'ปกติ'}):</strong> ${bItemsText}</p>` : ''}
+                            ${dItemsText ? `<p><strong>อาหารเย็น (${bk.foodOrder.dinnerTime || 'ปกติ'}):</strong> ${dItemsText}</p>` : ''}
+                            ${bk.foodOrder.extra ? `<p><strong>หมายเหตุ:</strong> ${bk.foodOrder.extra}</p>` : ''}
+                        </div>
+                    `;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg border border-slate-300 p-3.5 space-y-2.5 shadow-sm text-xs';
+                card.innerHTML = `
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <span class="font-bold text-rtafNavy">🏠 ห้อง ${bk.rooms.join(', ')}</span>
+                        <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">ยืนยันแล้ว</span>
+                    </div>
+                    <div class="space-y-1 text-slate-700 leading-relaxed">
+                        <p><strong>หัวหน้าคณะ:</strong> ${bk.headName} (โทร. ${bk.phone})</p>
+                        <p><strong>วันที่เข้าพัก:</strong> ${bk.checkin} ถึง ${bk.checkout}</p>
+                        <p><strong>จำนวนผู้เข้าพัก:</strong> ${bk.guestCount} คน</p>
+                        <p><strong>ผู้แนะนำจอง:</strong> ${bk.recommenderName}</p>
+                    </div>
+                    ${foodDetailsHtml}
+                    <div class="pt-1 flex justify-end">
+                        <button type="button" onclick="cancelBookingById('${bk.id}', '${bk.checkin}', '${bk.rooms.join(',')}')" class="py-1.5 px-3 bg-red-50 hover:bg-red-100 text-red-700 border border-red-300 font-bold text-[11px] rounded transition">
+                            ❌ ยกเลิกการจองนี้
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // ฟังก์ชันยกเลิกการจองและปลดล็อกห้องพักคืนสถานะว่าง
+        function cancelBookingById(bookingId, checkinDate, roomsStr) {
+            if (!confirm('ยืนยันการยกเลิกการจองนี้? ห้องพักจะถูกปลดล็อกกลับเป็นสถานะว่าง')) return;
+
+            // ลบออกจากรายการจองหลังบ้าน
+            allBookingsList = allBookingsList.filter(b => b.id !== bookingId);
+            localStorage.setItem('phumankhao_admin_bookings', JSON.stringify(allBookingsList));
+
+            // คืนสถานะห้องว่างในปฏิทินกลาง
+            const roomsArray = roomsStr.split(',');
+            if (occupiedRoomsByDate[checkinDate]) {
+                occupiedRoomsByDate[checkinDate] = occupiedRoomsByDate[checkinDate].filter(r => !roomsArray.includes(r));
+                if (occupiedRoomsByDate[checkinDate].length === 0) {
+                    delete occupiedRoomsByDate[checkinDate];
+                }
+                localStorage.setItem('phumankhao_central_calendar', JSON.stringify(occupiedRoomsByDate));
+            }
+
+            renderCalendar();
+            updateRoomAvailabilityByDate();
+            renderAdminBookingsList();
+            showToast('ยกเลิกการจองเรียบร้อยแล้ว ห้องพักกลับมาว่าง');
         }
 
         function generateGoogleCalendarUrl(title, details, startDate, endDate) {
@@ -1048,7 +1246,7 @@
             textarea.select();
             document.execCommand('copy');
             document.body.removeChild(textarea);
-            showToast('คัดลอกรายการอาหารเรียบร้อยแล้ว');
+            showToast('คัดลอกรายการเรียบร้อยแล้ว');
         }
 
         function showToast(message) {
