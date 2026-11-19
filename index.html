@@ -62,7 +62,7 @@
                 <div>
                     <h1 class="text-base font-bold tracking-wide text-white">บ้านพักรับรอง สถานีรายงานภูหมันขาว</h1>
                 </div>
-                <span id="sync-status-badge" class="text-[10px] bg-rtafNavyLight border border-rtafGold/40 text-rtafGoldLight px-2 py-0.5 rounded">ออนไลน์</span>
+                <span id="sync-status-badge" class="text-[10px] bg-rtafNavyLight border border-rtafGold/40 text-rtafGoldLight px-2 py-0.5 rounded">ซิงค์แล้ว</span>
             </div>
         </header>
 
@@ -462,9 +462,9 @@
                 </div>
             </section>
 
-            <!-- 4. ADMIN PANEL (ผู้ดูแลบ้านพัก - แสดงหน้าปฏิทินก่อน เมื่อกดวันที่จึงแสดงข้อมูลผู้จองทั้งหมด และแก้ไขเพิ่ม/ลดรายการได้) -->
+            <!-- 4. ADMIN PANEL (ผู้ดูแลบ้านพัก: ปฏิทินภาพรวมการจองห้องพัก + รายการจองและสั่งอาหารทั้งหมด) -->
             <section id="tab-admin" class="p-4 space-y-5 hidden bg-slate-50">
-                <!-- ส่วนกล่องใส่รหัสผ่าน -->
+                <!-- กล่องใส่รหัสผ่าน -->
                 <div id="admin-login-box" class="bg-white rounded-lg border border-slate-300 p-6 space-y-4 shadow-sm text-center">
                     <div class="w-14 h-14 bg-rtafNavy text-rtafGold rounded-full flex items-center justify-center mx-auto text-2xl shadow">
                         🔒
@@ -481,28 +481,20 @@
                     </div>
                 </div>
 
-                <!-- ส่วนหน้าปฏิทินและรายละเอียดของผู้ดูแล (แสดงหลังใส่รหัสถูกต้อง) -->
-                <div id="admin-dashboard-box" class="hidden space-y-4">
-                    <div class="border-l-4 border-rtafGold bg-rtafNavy text-white p-4 rounded-r-lg shadow-sm flex items-center justify-between">
-                        <div>
-                            <h2 class="font-bold text-sm text-rtafGoldLight">ปฏิทินการจองบ้านพัก (ผู้ดูแล)</h2>
-                            <p class="text-[11px] text-slate-300 mt-0.5">สถานีรายงานภูหมันขาว</p>
-                        </div>
-                        <div class="flex items-center space-x-1.5">
-                            <button type="button" onclick="syncFromCloud(true)" class="px-2.5 py-1.5 bg-rtafNavyLight hover:bg-slate-800 text-rtafGoldLight border border-rtafGold/40 font-semibold text-[11px] rounded transition">
-                                🔄 รีเฟรช
-                            </button>
-                            <button type="button" onclick="lockAdminPanel()" class="px-2.5 py-1.5 bg-red-600 hover:bg-red-700 text-white font-semibold text-[11px] rounded transition">
+                <!-- ส่วนหน้าผู้ดูแล -->
+                <div id="admin-dashboard-box" class="hidden space-y-5">
+                    <!-- 1. ปฏิทินภาพรวมการจองห้องพัก -->
+                    <div class="bg-white rounded-lg border border-slate-200 p-4 space-y-3 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <h2 class="font-bold text-sm text-rtafNavy">ปฏิทินภาพรวมการจองห้องพัก</h2>
+                            <button type="button" onclick="lockAdminPanel()" class="px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white font-semibold text-[11px] rounded transition">
                                 ออก
                             </button>
                         </div>
-                    </div>
 
-                    <!-- ส่วนปฏิทินหลักของผู้ดูแล -->
-                    <div class="bg-white rounded-lg border border-slate-200 p-4 space-y-3 shadow-sm">
                         <div class="flex items-center justify-between bg-slate-50 px-3 py-1.5 rounded border border-slate-200 text-xs">
                             <button type="button" onclick="changeAdminCalendarMonth(-1)" class="font-bold text-rtafNavy px-2 py-0.5 hover:bg-slate-200 rounded">ก่อนหน้า</button>
-                            <span id="admin-calendar-title" class="font-bold text-rtafNavy">พฤศจิกายน 2026</span>
+                            <span id="admin-calendar-title" class="font-bold text-rtafNavy">ธันวาคม 2026</span>
                             <button type="button" onclick="changeAdminCalendarMonth(1)" class="font-bold text-rtafNavy px-2 py-0.5 hover:bg-slate-200 rounded">ถัดไป</button>
                         </div>
 
@@ -518,18 +510,24 @@
 
                         <div id="admin-calendar-grid" class="grid grid-cols-7 gap-1 text-center text-xs"></div>
 
-                        <p class="text-[11px] text-slate-500 text-center pt-1">
-                            กดที่วันที่บนปฏิทินเพื่อดูข้อมูลผู้จองทั้งหมดของวันนั้น
-                        </p>
+                        <!-- แสดงรายการผู้จองเมื่อกดปฏิทินในวันนั้นๆ -->
+                        <div id="admin-selected-date-panel" class="pt-1 space-y-2.5">
+                            <div id="admin-selected-date-status" class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700">
+                                กดที่วันที่บนปฏิทินเพื่อดูรายการผู้จองในวันนั้น
+                            </div>
+                            <div id="admin-selected-date-bookings" class="space-y-3"></div>
+                        </div>
                     </div>
 
-                    <!-- ส่วนแสดงข้อมูลผู้จองทั้งหมดของวันที่ถูกกด (ซ่อนไว้จนกว่าจะกดวันที่) -->
-                    <div id="admin-selected-date-panel" class="hidden space-y-3">
-                        <div class="bg-rtafNavy text-rtafGoldLight px-4 py-2.5 rounded-lg flex items-center justify-between text-xs font-bold shadow-sm">
-                            <span id="admin-selected-date-heading">ข้อมูลการจอง</span>
-                            <button type="button" onclick="closeAdminSelectedDate()" class="text-slate-300 hover:text-white text-[11px] underline">ปิด</button>
+                    <!-- 2. รายการจองและสั่งอาหารทั้งหมด -->
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between px-0.5">
+                            <h3 class="font-bold text-sm text-rtafNavy">รายการจองและสั่งอาหารทั้งหมด</h3>
+                            <button type="button" onclick="syncFromCloud(true)" class="text-[11px] text-rtafNavy font-semibold hover:underline">
+                                🔄 รีเฟรชข้อมูล
+                            </button>
                         </div>
-                        <div id="admin-selected-date-bookings" class="space-y-3"></div>
+                        <div id="admin-all-bookings-list" class="space-y-3"></div>
                     </div>
                 </div>
             </section>
@@ -696,7 +694,7 @@
                 document.getElementById('admin-password-input').value = '';
                 document.getElementById('admin-login-box').classList.remove('hidden');
                 document.getElementById('admin-dashboard-box').classList.add('hidden');
-                closeAdminSelectedDate();
+                resetAdminSelectedDate();
             }
 
             ['regulations', 'booking', 'food', 'admin'].forEach(t => {
@@ -730,7 +728,7 @@
             if (pwd === '84088408') {
                 document.getElementById('admin-login-box').classList.add('hidden');
                 document.getElementById('admin-dashboard-box').classList.remove('hidden');
-                closeAdminSelectedDate();
+                resetAdminSelectedDate();
                 syncFromCloud(true);
                 showToast('เข้าสู่ระบบผู้ดูแลสำเร็จ');
             } else {
@@ -740,17 +738,19 @@
 
         function lockAdminPanel() {
             document.getElementById('admin-password-input').value = '';
-            closeAdminSelectedDate();
+            resetAdminSelectedDate();
             closeEditBookingModal();
             document.getElementById('admin-dashboard-box').classList.add('hidden');
             document.getElementById('admin-login-box').classList.remove('hidden');
             showToast('ออกจากระบบผู้ดูแลแล้ว');
         }
 
-        function closeAdminSelectedDate() {
+        function resetAdminSelectedDate() {
             activeAdminDateStr = null;
-            const panel = document.getElementById('admin-selected-date-panel');
-            if (panel) panel.classList.add('hidden');
+            const statusEl = document.getElementById('admin-selected-date-status');
+            const listEl = document.getElementById('admin-selected-date-bookings');
+            if (statusEl) statusEl.innerHTML = 'กดที่วันที่บนปฏิทินเพื่อดูรายการผู้จองในวันนั้น';
+            if (listEl) listEl.innerHTML = '';
         }
 
         function toggleAgreeButton() {
@@ -843,7 +843,7 @@
         let currentCalYear = 2026;
         let currentCalMonth = 10;
         let adminCalYear = 2026;
-        let adminCalMonth = 10;
+        let adminCalMonth = 11;
         let activeAdminDateStr = null;
 
         let editingBookingId = null;
@@ -914,13 +914,14 @@
                     renderCalendar();
                     updateRoomAvailabilityByDate();
                     renderAdminCalendar();
+                    renderAllAdminBookings();
                     if (activeAdminDateStr) {
                         selectAdminCalendarDate(activeAdminDateStr);
                     }
                     setSyncBadge('ซิงค์แล้ว', false);
                     if (showMsg) showToast('อัปเดตข้อมูลล่าสุดจากระบบเรียบร้อยแล้ว');
                 } else {
-                    setSyncBadge('ออนไลน์', false);
+                    setSyncBadge('ซิงค์แล้ว', false);
                 }
             } catch (err) {
                 console.error('Sync error:', err);
@@ -930,6 +931,7 @@
                 renderCalendar();
                 updateRoomAvailabilityByDate();
                 renderAdminCalendar();
+                renderAllAdminBookings();
                 if (activeAdminDateStr) {
                     selectAdminCalendarDate(activeAdminDateStr);
                 }
@@ -986,7 +988,7 @@
             adminCalMonth += delta;
             if (adminCalMonth < 0) { adminCalMonth = 11; adminCalYear--; }
             else if (adminCalMonth > 11) { adminCalMonth = 0; adminCalYear++; }
-            closeAdminSelectedDate();
+            resetAdminSelectedDate();
             renderAdminCalendar();
         }
 
@@ -1061,7 +1063,7 @@
                 let badgeText = 'ว่าง';
                 if (matched.length > 0) {
                     colorClass = 'bg-amber-50 text-amber-900 border-amber-300 font-bold hover:bg-amber-100';
-                    badgeText = `${matched.length} คณะ`;
+                    badgeText = `จอง (${matched.length})`;
                 }
                 if (isSelected) {
                     colorClass += ' ring-2 ring-rtafNavy border-rtafNavy';
@@ -1078,7 +1080,7 @@
 
         function formatFoodSummaryForAdmin(foodOrder) {
             if (!foodOrder) {
-                return '<p class="text-slate-500 italic">ไม่ได้สั่งอาหารล่วงหน้า</p>';
+                return '<p class="text-slate-400 italic text-xs">ไม่ได้สั่งอาหารล่วงหน้า</p>';
             }
 
             let bParts = [];
@@ -1101,9 +1103,13 @@
                 });
             }
 
+            if (bParts.length === 0 && dParts.length === 0 && !foodOrder.extra) {
+                return '<p class="text-slate-400 italic text-xs">ไม่ได้สั่งอาหารล่วงหน้า</p>';
+            }
+
             return `
                 <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-[11px] space-y-1">
-                    <p class="font-bold text-rtafNavy">🍽️ รายการอาหารที่สั่ง:</p>
+                    <p class="font-bold text-rtafNavy">อาหารที่สั่ง:</p>
                     <p><strong>อาหารเช้า (${foodOrder.breakfastTime || 'ตามเวลาปกติ'}):</strong> ${bParts.length > 0 ? bParts.join(', ') : '-'}</p>
                     <p><strong>อาหารเย็น (${foodOrder.dinnerTime || 'ตามเวลาปกติ'}):</strong> ${dParts.length > 0 ? dParts.join(', ') : '-'}</p>
                     <p><strong>หมายเหตุ:</strong> ${foodOrder.extra && foodOrder.extra.trim() ? foodOrder.extra : '-'}</p>
@@ -1111,52 +1117,68 @@
             `;
         }
 
+        function createBookingCardElement(bk) {
+            const card = document.createElement('div');
+            card.className = 'bg-white rounded-lg border border-slate-200 p-4 space-y-2.5 shadow-sm text-xs';
+            card.innerHTML = `
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <span class="font-bold text-rtafNavy text-sm">🏠 ห้อง ${(bk.rooms || []).join(', ')}</span>
+                    <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">ยืนยันแล้ว</span>
+                </div>
+                <div class="space-y-1 text-slate-700 leading-relaxed">
+                    <p><strong>ชื่อผู้แนะนำจองห้องพัก:</strong> ${bk.recommenderName || '-'}</p>
+                    <p><strong>ชื่อหัวหน้าคณะผู้เข้าพัก:</strong> ${bk.headName || '-'}</p>
+                    <p><strong>เบอร์โทรประสานงาน:</strong> ${bk.phone || '-'}</p>
+                    <p><strong>จำนวนผู้เข้าพัก (คน):</strong> ${bk.guestCount || '-'} คน</p>
+                    <p><strong>วันที่เข้าพัก - ออก:</strong> ${bk.checkin || '-'} ถึง ${bk.checkout || '-'}</p>
+                </div>
+                ${formatFoodSummaryForAdmin(bk.foodOrder)}
+                <div class="pt-1 flex items-center justify-between gap-2">
+                    <button type="button" onclick="openEditBookingModal('${bk.id}')" class="py-1.5 px-3 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-[11px] rounded transition">
+                        ✏️ แก้ไข / เพิ่ม-ลดรายการ
+                    </button>
+                    <button type="button" onclick="cancelBookingById('${bk.id}')" class="py-1.5 px-3 bg-red-50 hover:bg-red-100 text-red-700 border border-red-300 font-bold text-[11px] rounded transition">
+                        ✕ ยกเลิกการจองนี้
+                    </button>
+                </div>
+            `;
+            return card;
+        }
+
         function selectAdminCalendarDate(dateStr) {
             activeAdminDateStr = dateStr;
             renderAdminCalendar();
 
-            const panel = document.getElementById('admin-selected-date-panel');
-            const heading = document.getElementById('admin-selected-date-heading');
+            const statusEl = document.getElementById('admin-selected-date-status');
             const listContainer = document.getElementById('admin-selected-date-bookings');
-
-            if (!panel || !heading || !listContainer) return;
+            if (!statusEl || !listContainer) return;
 
             const matchedBookings = allBookingsList.filter(b => dateStr >= b.checkin && dateStr < b.checkout);
-            heading.innerText = `ข้อมูลการจองวันที่ ${dateStr} (${matchedBookings.length} รายการ)`;
-            panel.classList.remove('hidden');
+            listContainer.innerHTML = '';
 
             if (matchedBookings.length === 0) {
-                listContainer.innerHTML = '<div class="bg-white rounded-lg border border-slate-200 p-4 text-center text-xs text-slate-500">ไม่มีรายการจองห้องพักในวันนี้</div>';
+                statusEl.innerHTML = `<strong>วันที่ ${dateStr}:</strong> ไม่มีรายการจองห้องพักในวันนี้`;
                 return;
             }
 
-            listContainer.innerHTML = '';
-            matchedBookings.forEach((bk) => {
-                const card = document.createElement('div');
-                card.className = 'bg-white rounded-lg border border-slate-300 p-4 space-y-2.5 shadow-sm text-xs';
-                card.innerHTML = `
-                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
-                        <span class="font-bold text-rtafNavy text-sm">🏠 ห้อง ${(bk.rooms || []).join(', ')}</span>
-                        <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">ยืนยันแล้ว</span>
-                    </div>
-                    <div class="space-y-1 text-slate-700 leading-relaxed">
-                        <p><strong>หัวหน้าคณะผู้เข้าพัก:</strong> ${bk.headName || '-'}</p>
-                        <p><strong>เบอร์โทรประสานงาน:</strong> ${bk.phone || '-'}</p>
-                        <p><strong>ผู้แนะนำจองห้องพัก:</strong> ${bk.recommenderName || '-'}</p>
-                        <p><strong>จำนวนผู้เข้าพัก:</strong> ${bk.guestCount || '-'} คน</p>
-                        <p><strong>วันที่เข้าพัก - ออก:</strong> ${bk.checkin || '-'} ถึง ${bk.checkout || '-'}</p>
-                    </div>
-                    ${formatFoodSummaryForAdmin(bk.foodOrder)}
-                    <div class="pt-1 flex items-center justify-between gap-2">
-                        <button type="button" onclick="openEditBookingModal('${bk.id}')" class="py-1.5 px-3 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-[11px] rounded transition">
-                            ✏️ แก้ไข / เพิ่ม-ลดรายการ
-                        </button>
-                        <button type="button" onclick="cancelBookingById('${bk.id}')" class="py-1.5 px-3 bg-red-50 hover:bg-red-100 text-red-700 border border-red-300 font-bold text-[11px] rounded transition">
-                            ❌ ยกเลิกการจองนี้
-                        </button>
-                    </div>
-                `;
-                listContainer.appendChild(card);
+            statusEl.innerHTML = `<strong>วันที่ ${dateStr}:</strong> มีรายการจอง ${matchedBookings.length} รายการ`;
+            matchedBookings.forEach(bk => {
+                listContainer.appendChild(createBookingCardElement(bk));
+            });
+        }
+
+        function renderAllAdminBookings() {
+            const container = document.getElementById('admin-all-bookings-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (!allBookingsList || allBookingsList.length === 0) {
+                container.innerHTML = '<div class="bg-white rounded-lg border border-slate-200 p-4 text-center text-xs text-slate-500">ยังไม่มีรายการจองในระบบ</div>';
+                return;
+            }
+
+            allBookingsList.forEach(bk => {
+                container.appendChild(createBookingCardElement(bk));
             });
         }
 
@@ -1298,13 +1320,13 @@
             localStorage.setItem('phumankhao_admin_bookings', JSON.stringify(allBookingsList));
             localStorage.setItem('phumankhao_central_calendar', JSON.stringify(occupiedRoomsByDate));
 
-            const targetDateToShow = activeAdminDateStr || checkin;
-            activeAdminDateStr = targetDateToShow;
-
             renderCalendar();
             updateRoomAvailabilityByDate();
             renderAdminCalendar();
-            selectAdminCalendarDate(targetDateToShow);
+            renderAllAdminBookings();
+            if (activeAdminDateStr) {
+                selectAdminCalendarDate(activeAdminDateStr);
+            }
             closeEditBookingModal();
 
             try {
@@ -1319,7 +1341,7 @@
                 showToast('บันทึกการแก้ไขเรียบร้อยแล้ว');
             } catch (err) {
                 console.error(err);
-                setSyncBadge('ออนไลน์', false);
+                setSyncBadge('ซิงค์แล้ว', false);
                 showToast('บันทึกการแก้ไขเรียบร้อยแล้ว');
             }
         }
@@ -1418,6 +1440,7 @@
             renderCalendar();
             updateRoomAvailabilityByDate();
             renderAdminCalendar();
+            renderAllAdminBookings();
 
             const foodRoomSelect = document.getElementById('food-room-select');
             if (foodRoomSelect) {
@@ -1673,6 +1696,7 @@
             if (targetBookingId) {
                 allBookingsList = allBookingsList.map(bk => bk.id === targetBookingId ? { ...bk, foodOrder: foodDataObj } : bk);
                 localStorage.setItem('phumankhao_admin_bookings', JSON.stringify(allBookingsList));
+                renderAllAdminBookings();
 
                 try {
                     setSyncBadge('กำลังส่ง...', true);
@@ -1685,7 +1709,7 @@
                     setSyncBadge('ซิงค์แล้ว', false);
                 } catch (err) {
                     console.error(err);
-                    setSyncBadge('ออนไลน์', false);
+                    setSyncBadge('ซิงค์แล้ว', false);
                 }
             }
 
@@ -1705,6 +1729,7 @@
             renderCalendar();
             updateRoomAvailabilityByDate();
             renderAdminCalendar();
+            renderAllAdminBookings();
             if (activeAdminDateStr) {
                 selectAdminCalendarDate(activeAdminDateStr);
             }
@@ -1721,7 +1746,7 @@
                 showToast('ยกเลิกการจองเรียบร้อยแล้ว ห้องพักกลับมาว่าง');
             } catch (err) {
                 console.error(err);
-                setSyncBadge('ออนไลน์', false);
+                setSyncBadge('ซิงค์แล้ว', false);
                 showToast('ยกเลิกการจองเรียบร้อยแล้ว');
             }
         }
